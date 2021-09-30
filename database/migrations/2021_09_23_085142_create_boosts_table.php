@@ -21,8 +21,8 @@ class CreateBoostsTable extends Migration
             $table->decimal('budget');
             $table->string('program_name');
             $table->string('target_url');
-            $table->date('boost_start');
-            $table->date('boost_end')->nullable();
+            $table->datetime('boost_start');
+            $table->datetime('boost_end')->nullable();
             $table->string('detail')->nullable();
             $table->integer('status');
             $table->timestamps();

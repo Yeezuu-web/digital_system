@@ -96,23 +96,91 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => 22,
-                'title' => 'file_acces',
+                'title' => 'department_access',
             ],
             [
                 'id'    => 23,
-                'title' => 'file_create',
+                'title' => 'department_create',
             ],
             [
                 'id'    => 24,
-                'title' => 'file_show',
+                'title' => 'department_edit',
             ],
             [
                 'id'    => 25,
-                'title' => 'file_delete',
+                'title' => 'department_delete',
             ],
             [
                 'id'    => 26,
-                'title' => 'file_edit',
+                'title' => 'department_show',
+            ],
+            [
+                'id'    => 27,
+                'title' => 'channel_access',
+            ],
+            [
+                'id'    => 28,
+                'title' => 'channel_create',
+            ],
+            [
+                'id'    => 29,
+                'title' => 'channel_edit',
+            ],
+            [
+                'id'    => 30,
+                'title' => 'channel_delete',
+            ],
+            [
+                'id'    => 31,
+                'title' => 'channel_show',
+            ],
+            [
+                'id'    => 32,
+                'title' => 'boost_access',
+            ],
+            [
+                'id'    => 33,
+                'title' => 'boost_create',
+            ],
+            [
+                'id'    => 34,
+                'title' => 'boost_edit',
+            ],
+            [
+                'id'    => 35,
+                'title' => 'boost_delete',
+            ],
+            [
+                'id'    => 36,
+                'title' => 'boost_show',
+            ],
+            [
+                'id'    => 37,
+                'title' => 'boost_reviewer',
+            ],
+            [
+                'id'    => 38,
+                'title' => 'boost_approver',
+            ],
+            [
+                'id'    => 39,
+                'title' => 'boost_admin',
+            ],
+            [
+                'id'    => 40,
+                'title' => 'boost_reviewer_edit',
+            ],
+            [
+                'id'    => 41,
+                'title' => 'boost_approver_edit',
+            ],
+            [
+                'id'    => 42,
+                'title' => 'boost_approver_admin',
+            ],
+            [
+                'id'    => 43,
+                'title' => 'boost_request',
             ],
         ];
 

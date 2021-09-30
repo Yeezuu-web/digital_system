@@ -170,7 +170,7 @@ class BoostsController extends Controller
             'btn' => 'Check and Review Request',
         ];
        
-        \Mail::to('monivann.nop@ctn.com.kh')->send(new \App\Mail\BoostMail($details));
+        \Mail::to('piseth.chhun@ctn.com.kh')->send(new \App\Mail\BoostMail($details));
 
         if ($request->input('reference', false)) {
             $boost->addMedia(storage_path('tmp/uploads/' . basename($request->input('reference'))))->toMediaCollection('reference');
@@ -283,7 +283,7 @@ class BoostsController extends Controller
                 'btn' => 'Check and Approve',
             ];
            
-            \Mail::to('monivann.nop@ctn.com.kh')->send(new \App\Mail\BoostMail($details));
+            \Mail::to('piseth.chhun@ctn.com.kh')->send(new \App\Mail\BoostMail($details));
         }elseif ( $request->action == 'reject' ) {
             $now = now();
             $boost->update(['status' => '4', 'reviewed_at' => $now]);
