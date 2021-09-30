@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Http\Requests\Boost;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreBoostRequest extends FormRequest
+{
+    public function authorize()
+    {
+        return true;
+    }
+
+    public function rules()
+    {
+        return [
+            'requester_name' => [
+                'required',
+                'string',
+                'min:3'
+            ],
+            'company_name' => [
+                'required',
+                'string',
+                'min:3'
+            ],
+            'target_url' => [
+                'required',
+                'string',
+                'min:10'
+            ],
+            'group' => [
+                'required',
+                'string'
+            ],
+            'budget' => [
+                'required',
+                'integer'
+            ],
+            'program_name' => [
+                'required',
+                'string',
+                'min:3'
+            ],
+            'boost_start' => [
+                'required',
+                'date'
+            ],
+            'boost_end' => [
+                'required',
+                'date'
+            ],
+            'detail' => [
+                'nullable',
+                'string'
+            ],
+            'status' => [
+                'nullable'
+            ],
+            'channel_id' => [
+                'required',
+            ],
+            'reference' => [
+                'required',
+            ],
+            'reason' => [
+                'required'    
+            ]
+        ];
+    }
+}
