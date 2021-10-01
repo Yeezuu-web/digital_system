@@ -29,6 +29,22 @@
                     </a>
                 </li>
             @endcan
+            @can('employee_access') 
+                <li class="nav-item {{ request()->is("admin/employees") || request()->is("admin/employees/*") ? "active" : "" }}">
+                    <a href="{{ route("admin.employees.index") }}" class="nav-link">
+                        <i class="link-icon" data-feather="user"></i>
+                        <span class="link-title">{{ trans('global.employee') }}</span>
+                    </a>
+                </li>
+            @endcan
+            @can('position_access') 
+                <li class="nav-item {{ request()->is("admin/positions") || request()->is("admin/positions/*") ? "active" : "" }}">
+                    <a href="{{ route("admin.positions.index") }}" class="nav-link">
+                        <i class="link-icon" data-feather="package"></i>
+                        <span class="link-title">{{ trans('global.position') }}</span>
+                    </a>
+                </li>
+            @endcan
             @can('channel_access') 
                 <li class="nav-item {{ request()->is("admin/channels") || request()->is("admin/channels/*") ? "active" : "" }}">
                     <a href="{{ route("admin.channels.index") }}" class="nav-link">

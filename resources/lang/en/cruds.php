@@ -167,6 +167,55 @@ return [
             'updated_at_helper' => ' ',
         ],
     ],
-    
+    'position' => [
+        'title'             => 'Positions',
+        'title_singular'    =>'Position',
+        'fields'            => [
+            'id'                => 'ID',
+            'id_helper'         => ' ',
+            'title'             => 'Title',
+            'title_helper'      => ' ',
+            'department'        => 'Department',
+            'department_helper' => ' ',
+            'created_at'        => 'Created at',
+            'created_at_helper' => ' ',
+            'updated_at'        => 'Updated at',
+            'updated_at_helper' => ' ',
+
+            'deleted_at'               => 'Deleted at',
+            'deleted_at_helper'        => ' ',
+        ],
+    ],
+    'employee' => [
+        'title'              => 'Employees',
+        'title_singular'     => 'Employee',
+        'fields'             => [
+            'id'                => 'ID',
+            'id_helper'         => ' ',
+            'empId'             => 'Employee ID',
+            'empId_helper'      => ' ',
+            'first_name'        => 'First Name',
+            'first_name_helper' => ' ',
+            'last_name'         => 'Last Name',
+            'last_name_helper'  => ' ',
+            'gender'            => 'Gender',
+            'gender_helper'     => ' ',
+            'eligible'          => 'Eligible',
+            'eligible_helper'   => ' ',
+            'hire_date'         => 'Hire Date',
+            'hire_date_helper'  => ' ',
+            'position'          => 'Position',
+            'position_helper'   => ' ',
+            'user'              => 'User',
+            'user_helper'       => ' ',
+            'created_at'        => 'Created at',
+            'created_at_helper' => ' ',
+            'updated_at'        => 'Updated at',
+            'updated_at_helper' => ' ',
+
+            'deleted_at'               => 'Deleted at',
+            'deleted_at_helper'        => ' ', 
+        ],
+    ]
 
 ];

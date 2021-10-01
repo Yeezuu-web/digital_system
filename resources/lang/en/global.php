@@ -311,5 +311,7 @@ return [
     'channel'                       => 'Channel',
     'production'                    => 'Production',
     'boost'                         => 'Boost',
-    'report_boost'                  => 'Boost Report'
+    'report_boost'                  => 'Boost Report',
+    'position'                      => 'Position',
+    'employee'                      => 'Employee'
 ];

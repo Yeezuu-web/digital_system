@@ -1,19 +1,22 @@
 <?php
 
-use App\Http\Controllers\Admin\HomeController;
-use App\Http\Controllers\Admin\FilesController;
-use App\Http\Controllers\Admin\RolesController;
-use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\Admin\BoostsController;
-use App\Http\Controllers\Admin\ChannelsController;
-use App\Http\Controllers\Admin\FileImportController;
-use App\Http\Controllers\Admin\UserAlertsController;
-use App\Http\Controllers\Admin\DepartmentsController;
-use App\Http\Controllers\Admin\PermissionsController;
-use App\Http\Controllers\Admin\BoostsUpdateController;
 use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\Admin\{
+    HomeController,
+    RolesController,
+    UsersController,
+    BoostsController,
+    ChannelsController,
+    EmployeesController,
+    PositionsController,
+    UserAlertsController,
+    DepartmentsController,
+    PermissionsController,
+    BoostsUpdateController,
+};
 
-Route::redirect('/', '/system/login');
+
+Route::redirect('/', '/login');
 Route::get('/home', function () {
     if (session('status')) {
         return redirect()->route('admin.home')->with('status', session('status'));
@@ -48,13 +51,21 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::resource('user-alerts', UserAlertsController::class)->except(['edit', 'update']);
     Route::view('alerts', 'partials.alert-read')->name('alert.read');
 
-    //departmnt
+    // Departmnt
     Route::delete('departments/destroy', [DepartmentsController::class , 'massDestroy'])->name('departments.massDestroy');
     Route::resource('departments', DepartmentsController::class);
     
-    // channel
+    // Channel
     Route::delete('channels/destroy', [ChannelsController::class , 'massDestroy'])->name('channels.massDestroy');
     Route::resource('channels', ChannelsController::class);
+
+    //Position
+    Route::delete('positions/destroy', [PositionsController::class , 'massDestroy'])->name('positions.massDestroy');
+    Route::resource('positions', PositionsController::class);
+
+    //Employee
+    Route::delete('employees/destroy', [EmployeesController::class, 'massDestroy'])->name('employees.massDestroy');
+    Route::resource('employees', EmployeesController::class);
     
     // boost
     Route::delete('boosts/destroy', [BoostsController::class , 'massDestroy'])->name('boosts.massDestroy');

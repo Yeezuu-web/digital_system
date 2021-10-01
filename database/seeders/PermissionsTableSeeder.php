@@ -182,6 +182,46 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => 43,
                 'title' => 'boost_request',
             ],
+            [
+                'id'    => 44,
+                'title' => 'position_access',
+            ],
+            [
+                'id'    => 45,
+                'title' => 'position_create',
+            ],
+            [
+                'id'    => 46,
+                'title' => 'position_edit',
+            ],
+            [
+                'id'    => 47,
+                'title' => 'position_delete',
+            ],
+            [
+                'id'    => 48,
+                'title' => 'position_show',
+            ],
+            [
+                'id'    => 49,
+                'title' => 'employee_access',
+            ],
+            [
+                'id'    => 50,
+                'title' => 'employee_create',
+            ],
+            [
+                'id'    => 51,
+                'title' => 'employee_edit',
+            ],
+            [
+                'id'    => 52,
+                'title' => 'employee_delete',
+            ],
+            [
+                'id'    => 53,
+                'title' => 'employee_show',
+            ],
         ];
 
         Permission::insert($permissions);
