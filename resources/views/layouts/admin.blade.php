@@ -16,6 +16,7 @@
 	<link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Scroller-2.0.4/css/scroller.bootstrap4.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Responsive-2.2.9/css/responsive.bootstrap4.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/RowReorder-1.2.8/css/rowReorder.bootstrap4.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/SearchBuilder-1.1.0/css/searchBuilder.bootstrap4.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/vendors/dropzone/dropzone.min.css') }}">
@@ -121,7 +122,10 @@
 	<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
 	<script src="{{ asset('assets/vendors/select2/select2.min.js') }}"></script>
 	<script src="{{ asset('assets/vendors/DataTables/DataTables-1.10.25/js/jquery.dataTables.js') }}"></script>
-	<script src="{{ asset('assets/vendors/DataTables/DataTables-1.10.25/js/dataTables.bootstrap4.js') }}"></script>
+	<script src="{{ asset('assets/vendors/DataTables/DataTables-1.10.25/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('assets/vendors/moment/moment.min.js') }}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="{{ asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
 	<script src="{{ asset('assets/vendors/Double-Scrollbar-For-Scrollable-Container-jQuery-DoubleScroll/jquery.doubleScroll.js') }}"></script>
 	<script src="{{ asset('assets/vendors/DataTables/Select-1.3.3/js/dataTables.select.js') }}"></script>
 	<script src="{{ asset('assets/vendors/DataTables/Select-1.3.3/js/select.bootstrap4.js') }}"></script>
@@ -140,6 +144,7 @@
 	<script src="{{ asset('assets/vendors/DataTables/JSZip-2.5.0/jszip.js') }}"></script>
 	<script src="{{ asset('assets/vendors/dropzone/dropzone.min.js') }}"></script>
 	<script src="{{ asset('assets/vendors/DataTables/pdfmake-0.1.36/pdfmake.js') }}"></script>
+	<script src="{{ asset('assets/js/main.js') }}"></script>
 	
   	<!-- end plugin js for global -->
 	<!-- inject:js -->

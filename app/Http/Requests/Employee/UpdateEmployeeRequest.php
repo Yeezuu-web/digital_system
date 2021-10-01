@@ -20,6 +20,7 @@ class UpdateEmployeeRequest extends FormRequest
             'empId' => [
                 'string',
                 'required',
+                'min:5'
             ],
             'first_name' => [
                 'string',
@@ -43,7 +44,12 @@ class UpdateEmployeeRequest extends FormRequest
                 'date',
                 'required'
             ],
-            
+            'position_id' => [
+                'required'
+            ],
+            'user_id' => [
+                'required'
+            ],
 
         ];
     }

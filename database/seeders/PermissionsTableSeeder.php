@@ -222,6 +222,14 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => 53,
                 'title' => 'employee_show',
             ],
+            [
+                'id'    => 54,
+                'title' => 'hr_admin',
+            ],
+            [
+                'id'    => 55,
+                'title' => 'boost_admin',
+            ],
         ];
 
         Permission::insert($permissions);

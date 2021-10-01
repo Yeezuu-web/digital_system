@@ -40,3 +40,7 @@
     </div>
 </div>
 @endsection
+@section('scripts')
+@parent
+{!! JsValidator::formRequest('App\Http\Requests\Position\StorePositionRequest') !!}
+@endsection

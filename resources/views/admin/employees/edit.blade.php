@@ -56,15 +56,15 @@
             </div>
             <div class="form-group">
                 <label class="required" for="hire_date">{{ trans('cruds.employee.fields.hire_date') }}</label>
-                <input class="form-control @error('hire_date') form-control-danger @enderror" type="date" name="hire_date" id="hire_date" value="{{ old('hire_date', $employee->hire_date) }}" required>
+                <input class="form-control date @error('hire_date') form-control-danger @enderror" type="text" name="hire_date" id="hire_date" value="{{ old('hire_date', $employee->hire_date ) }}">
                 @error('hire_date')
                     <span class="error mt-2 text-danger">{{ $message }}</span>
                 @enderror
                 <span class="help-block">{{ trans('cruds.employee.fields.hire_date_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required" for="position_id">{{ trans('cruds.position.fields.position') }}</label>
-                <select class="form-control @error('position_id') form-control-danger @enderror" type="position_id" name="position_id" id="position_id" required>
+                <label class="required" for="position_id">{{ trans('cruds.employee.fields.position') }}</label>
+                <select class="js-example-basic-single w-100 select2-hidden-accessible @error('position_id') form-control-danger @enderror" name="position_id" id="position_id" data-width="100%" aria-hidden="true" required>
                     <option value="">--- Choose Position ---</option>
                     @foreach ($positions as $id => $position)
                         <option value="{{ $id }}" {{ old('position_id', $employee->position_id) == $id ? 'selected' : '' }}>{{ $position }}</option>
@@ -76,8 +76,8 @@
                 <span class="help-block">{{ trans('cruds.employee.fields.position_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required" for="user_id">{{ trans('cruds.position.fields.user') }}</label>
-                <select class="form-control @error('user_id') form-control-danger @enderror" type="user_id" name="user_id" id="user_id" required>
+                <label class="required" for="user_id">{{ trans('cruds.employee.fields.user') }}</label>
+                <select class="js-example-basic-single w-100 select2-hidden-accessible @error('user_id') form-control-danger @enderror" name="user_id" id="user_id" data-width="100%" aria-hidden="true" required>
                     <option value="">--- Choose User ---</option>
                     @foreach ($users as $id => $user)
                         <option value="{{ $id }}" {{ old('user_id', $employee->user_id) == $id ? 'selected' : '' }}>{{ $user }}</option>
@@ -103,6 +103,7 @@
 
 @section('scripts')
 @parent
+{!! JsValidator::formRequest('App\Http\Requests\Employee\UpdateEmployeeRequest') !!}
 <script>
     $(function() {
       let copyButtonTrans = '{{ trans('global.datatables.copy') }}'

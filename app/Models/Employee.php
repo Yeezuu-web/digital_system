@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\Department;
 use Illuminate\Database\Eloquent\Model;
+use Znck\Eloquent\Traits\BelongsToThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -11,6 +13,7 @@ class Employee extends Model
 {
     use SoftDeletes;
     use HasFactory;
+    use BelongsToThrough;
 
     protected $table = "employees";
 
@@ -44,10 +47,16 @@ class Employee extends Model
 
     public function position()
     {
-        return $this->beLongsTo(Position::class);
+        return $this->belongsTo(Position::class);
     }
+    
     public function user()
     {
-        return $this->beLongsTo(User::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsToThrough(Department::class, Position::class)->withTrashed('positons.deleted_at');
     }
 }

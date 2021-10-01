@@ -16971,7 +16971,7 @@ select {
             padding: 0.5rem 0;
             color: var(--text-primary); }
             .datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.day:hover {
-              background: #18284e; }
+              background: #afaaff; }
             .datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.day.active {
               color: #fff;
               background: transparent;

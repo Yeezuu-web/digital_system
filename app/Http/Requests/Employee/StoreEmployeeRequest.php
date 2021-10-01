@@ -21,6 +21,7 @@ class StoreEmployeeRequest extends FormRequest
             'empId' => [
                 'string',
                 'required',
+                'min:5'
             ],
             'first_name' => [
                 'string',
@@ -42,6 +43,12 @@ class StoreEmployeeRequest extends FormRequest
             ],
             'hire_date' => [
                 'date',
+                'required'
+            ],
+            'position_id' => [
+                'required'
+            ],
+            'user_id' => [
                 'required'
             ],
             

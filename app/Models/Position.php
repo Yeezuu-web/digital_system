@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\Department;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,11 +32,6 @@ class Position extends Model
 
     public function department()
     {
-        return $this->beLongsTo(Department::class);
-    }
-
-    public function employee()
-    {
-        return $this->hasMany(Employee::class);
+        return $this->belongsTo(Department::class)->withDefault();
     }
 }

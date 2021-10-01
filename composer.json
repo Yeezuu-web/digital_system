@@ -14,6 +14,7 @@
         "laravel/ui": "^3.3",
         "proengsoft/laravel-jsvalidation": "^4.5",
         "spatie/laravel-medialibrary": "9.0.0",
+        "staudenmeir/belongs-to-through": "^2.11",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {

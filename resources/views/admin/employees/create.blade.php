@@ -94,3 +94,7 @@
     </div>
 </div>
 @endsection
+@section('scripts')
+@parent
+{!! JsValidator::formRequest('App\Http\Requests\Employee\StoreEmployeeRequest') !!}
+@endsection

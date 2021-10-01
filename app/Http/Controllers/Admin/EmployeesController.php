@@ -20,7 +20,7 @@ class EmployeesController extends Controller
     {
         abort_if(Gate::denies('position_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $employees = Employee::with('position')->get();
+        $employees = Employee::with('department')->get();
 
         return view('admin.employees.index', compact('employees'));
     }
@@ -31,6 +31,7 @@ class EmployeesController extends Controller
         abort_if(Gate::denies('employee_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $positions = Position::pluck('title', 'id');
+
         $users = User::pluck('name', 'id');
 
         return view('admin.employees.create', compact('positions', 'users'));
