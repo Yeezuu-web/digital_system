@@ -44,6 +44,22 @@
                         </a>
                     </li>
                 @endcan
+                @can('line_manager_access') 
+                    <li class="nav-item {{ request()->is("admin/lineManagers") || request()->is("admin/lineManagers/*") ? "active" : "" }}">
+                        <a href="{{ route("admin.lineManagers.index") }}" class="nav-link">
+                            <i class="link-icon" data-feather="user"></i>
+                            <span class="link-title">{{ trans('global.lineManager') }}</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('leave_type_access') 
+                    <li class="nav-item {{ request()->is("admin/leaveTypes") || request()->is("admin/leaveTypes/*") ? "active" : "" }}">
+                        <a href="{{ route("admin.leaveTypes.index") }}" class="nav-link">
+                            <i class="link-icon" data-feather="user"></i>
+                            <span class="link-title">{{ trans('global.leave_type') }}</span>
+                        </a>
+                    </li>
+                @endcan
                 @can('channel_access') 
                     <li class="nav-item {{ request()->is("admin/channels") || request()->is("admin/channels/*") ? "active" : "" }}">
                         <a href="{{ route("admin.channels.index") }}" class="nav-link">

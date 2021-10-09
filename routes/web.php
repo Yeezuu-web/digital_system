@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\{
     DepartmentsController,
     PermissionsController,
     BoostsUpdateController,
+    LineManagersController,
+    LeaveTypesController,
 };
 
 
@@ -91,6 +93,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     
     // boosts report
     Route::get('reports/boost', [BoostsUpdateController::class , 'index'])->name('reports.boosts.index');
+
+    // line manager
+    Route::delete('lineManagers/destroy', [LineManagersController::class , 'massDestroy'])->name('lineManagers.massDestroy');
+    Route::resource('lineManagers', LineManagersController::class);
+
+    // leave type
+    Route::delete('leaveTypes/destroy', [LeaveTypesController::class , 'massDestroy'])->name('leaveTypes.massDestroy');
+    Route::resource('leaveTypes', LeaveTypesController::class);
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password

@@ -313,5 +313,8 @@ return [
     'boost'                         => 'Boost',
     'report_boost'                  => 'Boost Report',
     'position'                      => 'Position',
-    'employee'                      => 'Employee'
+    'employee'                      => 'Employee',
+    'lineManager'                   => 'Line Manger',
+    'leave_type'                    => 'Leave Type',
+    'report_leave'                  => 'Reeport Leave',
 ];

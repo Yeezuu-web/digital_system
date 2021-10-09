@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use App\Models\Employee;
 use App\Models\Position;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,11 @@ class Department extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
     
     public function parent()
     {

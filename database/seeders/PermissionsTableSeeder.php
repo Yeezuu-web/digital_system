@@ -230,6 +230,46 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => 55,
                 'title' => 'boost_admin',
             ],
+            [
+                'id'    => 56,
+                'title' => 'line_manager_access',
+            ],
+            [
+                'id'    => 57,
+                'title' => 'line_manager_create',
+            ],
+            [
+                'id'    => 58,
+                'title' => 'line_manager_edit',
+            ],
+            [
+                'id'    => 59,
+                'title' => 'line_manager_delete',
+            ],
+            [
+                'id'    => 60,
+                'title' => 'line_manager_show',
+            ],
+            [
+                'id'    => 61,
+                'title' => 'leave_type_access',
+            ],
+            [
+                'id'    => 62,
+                'title' => 'leave_type_create',
+            ],
+            [
+                'id'    => 63,
+                'title' => 'leave_type_edit',
+            ],
+            [
+                'id'    => 64,
+                'title' => 'leave_type_delete',
+            ],
+            [
+                'id'    => 65,
+                'title' => 'leave_type_show',
+            ],
         ];
 
         Permission::insert($permissions);

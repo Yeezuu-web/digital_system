@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Channel extends Model
+class LeaveType extends Model
 {
-    use HasFactory;
     use SoftDeletes;
+    use HasFactory;
 
-    protected $table = "channels";
+    protected $table = "leave_types";
 
     protected $fillable = [
-        'title', 'description'
+        'title', 'default_dur'
     ];
 
     protected $dates = [
@@ -28,4 +28,5 @@ class Channel extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use DateTimeInterface;
 use App\Models\Department;
 use Illuminate\Database\Eloquent\Model;
 use Znck\Eloquent\Traits\BelongsToThrough;
@@ -43,6 +44,11 @@ class Employee extends Model
     public function getCreatedAtAttribute($value)
     {
         return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.datetime_format')) : null;
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 
     public function position()
