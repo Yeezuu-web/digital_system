@@ -37,7 +37,7 @@ class StoreEmployeeRequest extends FormRequest
                 'string',
                 'required'
             ],
-            'eligible' => [
+            'eligible_leave' => [
                 'string',
                 'required'
             ],

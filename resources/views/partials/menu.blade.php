@@ -60,16 +60,16 @@
                         </a>
                     </li>
                 @endcan
-                @can('channel_access') 
-                    <li class="nav-item {{ request()->is("admin/channels") || request()->is("admin/channels/*") ? "active" : "" }}">
-                        <a href="{{ route("admin.channels.index") }}" class="nav-link">
-                            <i class="link-icon" data-feather="tv"></i>
-                            <span class="link-title">{{ trans('global.channel') }}</span>
-                        </a>
-                    </li>
-                @endcan
             @endcan
             <li class="nav-item nav-category">Boost System</li>
+            @can('channel_access') 
+                <li class="nav-item {{ request()->is("admin/channels") || request()->is("admin/channels/*") ? "active" : "" }}">
+                    <a href="{{ route("admin.channels.index") }}" class="nav-link">
+                        <i class="link-icon" data-feather="tv"></i>
+                        <span class="link-title">{{ trans('global.channel') }}</span>
+                    </a>
+                </li>
+            @endcan
             @can('boost_request')
                 <li class="nav-item {{ request()->is("admin/boosts/requestIndex") || request()->is("admin/boosts/requestIndex/*") ? "active" : "" }}">
                     <a href="{{ route("admin.boosts.requestIndex") }}" class="nav-link">

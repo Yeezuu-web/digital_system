@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\LeaveType;
 
+use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateLeaveTypeRequest extends FormRequest

@@ -36,7 +36,7 @@ class UpdateEmployeeRequest extends FormRequest
                 'string',
                 'required'
             ],
-            'eligible' => [
+            'eligible_leave' => [
                 'string',
                 'required'
             ],
@@ -50,7 +50,6 @@ class UpdateEmployeeRequest extends FormRequest
             'user_id' => [
                 'required'
             ],
-
         ];
     }
 }

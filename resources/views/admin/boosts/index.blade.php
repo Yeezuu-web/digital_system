@@ -226,7 +226,7 @@ $(function () {
           method: 'POST',
           url: config.url,
           data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { table.draw(); })
+          .done(function () { table.ajax.reload(); })
       }
       }
   }

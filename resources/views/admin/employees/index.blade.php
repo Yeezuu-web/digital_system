@@ -5,16 +5,17 @@
 
 @include('partials.flash-message')
 
-<div style="margin-bottom: 10px;" class="row">
-    <div class="col-lg-12">
-        <a class="btn btn-success" href="{{ route('admin.employees.create') }}">
-            {{ trans('global.add') }} {{ trans('cruds.employee.title_singular') }}
-        </a>
-    </div>
+<div class="mt-2">
+    <a class="btn btn-success" href="{{ route('admin.employees.create') }}">
+        {{ trans('global.add') }} {{ trans('cruds.employee.title_singular') }}
+    </a>
+</div>
+<div class="card mt-3">
     <div class="card-body">
+        <h6 class="card-title">Employee List</h6>
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-Employee">
-                <theaD>
+            <table class="table table-bordered table-striped table-hover datatable-Employee">
+                <thead>
                     <tr>
                         <th width="10">
 
@@ -53,7 +54,7 @@
                             &nbsp;
                         </th>
                     </tr>
-                </theaD>
+                </thead>
                 <tbody>
                     @foreach($employees as $key => $employee)
                         <tr data-entry-id="{{ $employee->id }}">
@@ -77,7 +78,7 @@
                             </td>
                             
                             <td>
-                                {{ $employee->eligible ?? ''}}
+                                {{ $employee->eligible_leave ?? ''}}
                             </td>
                             <td>
                                 {{ $employee->hire_date ?? ''}}
@@ -126,13 +127,9 @@
 
 @section('scripts')
 @parent
+
 <script>
     $(function() {
-      let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
-      let csvButtonTrans = '{{ trans('global.datatables.csv') }}'
-      let excelButtonTrans = '{{ trans('global.datatables.excel') }}'
-      let pdfButtonTrans = '{{ trans('global.datatables.pdf') }}'
-      let printButtonTrans = '{{ trans('global.datatables.print') }}'
       let colvisButtonTrans = '{{ trans('global.datatables.colvis') }}'
       let selectAllButtonTrans = '{{ trans('global.select_all') }}'
       let selectNoneButtonTrans = '{{ trans('global.deselect_all') }}'
@@ -164,7 +161,8 @@
         order: [],
         scroller: true,
         scrollX: false,
-        pageLength: 100,
+        autoWidth: true,
+        pageLength: 50,
         dom: 'Bfrtip<"actions">',
         lengthMenu: [
             [ 10, 25, 50, 100, -1 ],
@@ -199,7 +197,7 @@
       $.fn.dataTable.ext.classes.sPageButton = '';
     });
 
-  </script>
+</script>
 <script>
     $(function () {
         let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
@@ -226,7 +224,7 @@
                 method: 'POST',
                 url: config.url,
                 data: { ids: ids, _method: 'DELETE' }})
-                .done(function () { location.reload() })
+                .done(function () { table.ajax.reload(); })
             }
             }
         }
@@ -237,7 +235,7 @@
             orderCellsTop: true,
             order: [[ 1, 'desc' ]],
             select: false,
-            pageLength: 100,
+            pageLength: 50,
             select: true
         });
         let table = $('.datatable-Employee:not(.ajaxTable)').DataTable({ buttons: dtButtons })

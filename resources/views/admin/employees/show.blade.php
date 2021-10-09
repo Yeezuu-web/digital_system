@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.employee.title') }}
+        {{ trans('global.show') }} {{ trans('cruds.employee.title_singular') }}
     </div>
 
     <div class="card-body">
@@ -64,7 +64,7 @@
                             {{ trans('cruds.employee.fields.eligible') }}
                         </th>
                         <td>
-                            {{ $employee->eligible }}
+                            {{ $employee->eligible_leave }}
                         </td>
                     </tr>
                     <tr>

@@ -243,8 +243,8 @@ return [
         ],
     ],
     'leaveType' => [
-        'title'             => 'Line Managers',
-        'title_singular'    => 'Line Manager',
+        'title'             => 'Leave Types',
+        'title_singular'    => 'Leave Type',
         'fields'            => [
             'id'                => 'ID',
             'id_helper'         => ' ',

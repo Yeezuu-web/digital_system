@@ -38,8 +38,15 @@
 			margin-bottom: 0.3em;
 		}
 		.required::after,{
-			content: " *";
+			content: "*";
 			color: #e32;
+		}
+		.page-item.active .page-link {
+			background-color: lightgrey !important;
+			border: 1px solid black;
+		}
+		.page-link {
+			color: black !important;
 		}
 	</style>
 	@if(app()->getLocale() == 'kh')
@@ -119,10 +126,9 @@
 	<script src="{{ asset('assets/vendors/core/core.js') }}"></script>
 	<!-- endinject -->
 	<!-- plugin js for global -->
-	<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
 	<script src="{{ asset('assets/vendors/select2/select2.min.js') }}"></script>
 	<script src="{{ asset('assets/vendors/DataTables/DataTables-1.10.25/js/jquery.dataTables.js') }}"></script>
-	<script src="{{ asset('assets/vendors/DataTables/DataTables-1.10.25/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('assets/vendors/DataTables/DataTables-1.10.25/js/dataTables.bootstrap4.js') }}"></script>
 	<script src="{{ asset('assets/vendors/moment/moment.min.js') }}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 	<script src="{{ asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>

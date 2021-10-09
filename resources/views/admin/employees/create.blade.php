@@ -45,16 +45,16 @@
             </div>
 
             <div class="form-group">
-                <label for="eligible" class="required">{{ trans('cruds.employee.fields.eligible')}}</label>
-                <input class="form-control @error('eligible') form-control-danger @enderror" type="text" name="eligible" id="eligible" value="{{ old('eligible', '') }}" required>
-                @error('eligible')
+                <label for="eligible_leave" class="required">{{ trans('cruds.employee.fields.eligible')}}</label>
+                <input class="form-control @error('eligible_leave') form-control-danger @enderror" type="text" name="eligible_leave" id="eligible_leave" value="{{ old('eligible_leave', '') }}" required>
+                @error('eligible_leave')
                 <span class="error mt-2 text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
             <div class="form-group">
                 <label for="hire_date" class="required">{{ trans('cruds.employee.fields.hire_date')}}</label>
-                <input class="form-control @error('hire_date') form-control-danger @enderror" type="date" name="hire_date" id="hire_date" value="{{ old('hire_date', '') }}" required>
+                <input class="form-control date @error('hire_date') form-control-danger @enderror" type="text" name="hire_date" id="hire_date" value="{{ old('hire_date', '') }}" required>
                 @error('hire_date')
                 <span class="error mt-2 text-danger">{{ $message }}</span>
                 @enderror

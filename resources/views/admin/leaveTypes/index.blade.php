@@ -5,16 +5,17 @@
 
 @include('partials.flash-message')
 
-<div style="margin-bottom: 10px;" class="row">
-    <div class="col-lg-12">
-        <a class="btn btn-success" href="{{ route('admin.leaveTypes.create') }}">
-            {{ trans('global.add') }} {{ trans('cruds.leaveType.title_singular') }}
-        </a>
-    </div>
+<div class="mt-2">
+    <a class="btn btn-success" href="{{ route('admin.leaveTypes.create') }}">
+        {{ trans('global.add') }} {{ trans('cruds.leaveType.title_singular') }}
+    </a>
+</div>
+<div class="card mt-3">
     <div class="card-body">
+        <h6 class="card-title">Leave Type List</h6>
         <div class="table-responsive">
             <table class=" table table-bordered table-striped table-hover datatable datatable-leaveType">
-                <theaD>
+                <thead>
                     <tr>
                         <th width="10">
 
@@ -32,7 +33,7 @@
                             &nbsp;
                         </th>
                     </tr>
-                </theaD>
+                </thead>
                 <tbody>
                     @foreach($leaveTypes as $key => $leaveType)
                         <tr data-entry-id="{{ $leaveType->id }}">
@@ -118,19 +119,6 @@
           style:    'multi+shift',
           selector: 'td:first-child'
         },
-        responsive: {
-          breakpoints: [
-            {name: 'bigdesktop', width: Infinity},
-            {name: 'meddesktop', width: 1480},
-            {name: 'smalldesktop', width: 1280},
-            {name: 'medium', width: 1188},
-            {name: 'tabletl', width: 1024},
-            {name: 'btwtabllandp', width: 848},
-            {name: 'tabletp', width: 768},
-            {name: 'mobilel', width: 480},
-            {name: 'mobilep', width: 320}
-          ]
-        },
         order: [],
         scroller: true,
         scrollX: false,
@@ -169,11 +157,11 @@
       $.fn.dataTable.ext.classes.sPageButton = '';
     });
 
-  </script>
+</script>
 <script>
     $(function () {
         let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-        @can('leaveType_delete')
+        @can('leave_type_delete')
         let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
         let deleteButton = {
             text: deleteButtonTrans,
@@ -196,7 +184,7 @@
                 method: 'POST',
                 url: config.url,
                 data: { ids: ids, _method: 'DELETE' }})
-                .done(function () { location.reload() })
+                .done(function () { table.ajax.reload(); })
             }
             }
         }

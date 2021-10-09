@@ -25,7 +25,8 @@ class Employee extends Model
         'gender', 
         'position_id', 
         'user_id',
-        'eligible',
+        'eligible_leave',
+        'leave_taken',
         'hire_date',
     ];
 
@@ -40,6 +41,11 @@ class Employee extends Model
     {
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
     }
+
+    // public function setHireDateAttribute($value)
+    // {
+    //     $this->attributes['hire_date'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
+    // }
 
     public function getCreatedAtAttribute($value)
     {

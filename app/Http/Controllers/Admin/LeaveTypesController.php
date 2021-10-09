@@ -7,6 +7,9 @@ use App\Models\LeaveType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\LeaveType\StoreLeaveTypeRequest;
+use App\Http\Requests\LeaveType\UpdateLeaveTypeRequest;
+use App\Http\Requests\LeaveType\MassDestroyLeaveTypeRequest;
 
 class LeaveTypesController extends Controller
 {
@@ -26,59 +29,49 @@ class LeaveTypesController extends Controller
         return view('admin.leaveTypes.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreLeaveTypeRequest $request)
     {
-        //
+        LeaveType::create($request->all());
+
+        return redirect()->route('admin.leaveTypes.index')
+            ->with('success', 'Leave Type has been create successfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\LeaveType  $leaveType
-     * @return \Illuminate\Http\Response
-     */
     public function show(LeaveType $leaveType)
     {
-        //
+        abort_if(Gate::denies('leave_type_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return view('admin.leaveTypes.show', compact('leaveType'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\LeaveType  $leaveType
-     * @return \Illuminate\Http\Response
-     */
     public function edit(LeaveType $leaveType)
     {
-        //
+        abort_if(Gate::denies('leave_type_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return view('admin.leaveTypes.edit', compact('leaveType'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\LeaveType  $leaveType
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, LeaveType $leaveType)
+    public function update(UpdateLeaveTypeRequest $request, LeaveType $leaveType)
     {
-        //
+        $leaveType->update($request->all());
+
+        return redirect()->route('admin.leaveTypes.index')
+            ->with('success', 'Leave Type has been update successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\LeaveType  $leaveType
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(LeaveType $leaveType)
     {
-        //
+        abort_if(Gate::denies('department_destroy'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $leaveType->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function MassDestroy(MassDestroyLeaveTypeRequest $request)
+    {
+        LeaveType::whereIn('id', request('ids'))->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

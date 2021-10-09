@@ -108,7 +108,7 @@
             method: 'POST',
             url: config.url,
             data: { ids: ids, _method: 'DELETE' }})
-            .done(function () { location.reload() })
+            .done(function () { table.ajax.reload(); })
         }
         }
     }
