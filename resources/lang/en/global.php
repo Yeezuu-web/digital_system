@@ -315,7 +315,8 @@ return [
     'position'                      => 'Position',
     'employee'                      => 'Employee',
     'lineManager'                   => 'Line Manger',
+    'holiday'                       => 'Holiday',
     'leave_type'                    => 'Leave Type',
-    'leave_request'                    => 'Leave Request',
+    'leave_request'                 => 'Leave Request',
     'report_leave'                  => 'Reeport Leave',
 ];

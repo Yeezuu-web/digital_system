@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\{
     BoostsUpdateController,
     LineManagersController,
     LeaveTypesController,
+    HolidaysController,
+    LeaveRequestsController
 };
 
 
@@ -61,9 +63,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::delete('channels/destroy', [ChannelsController::class , 'massDestroy'])->name('channels.massDestroy');
     Route::resource('channels', ChannelsController::class);
 
-    //Position
+    // Position
     Route::delete('positions/destroy', [PositionsController::class , 'massDestroy'])->name('positions.massDestroy');
     Route::resource('positions', PositionsController::class);
+
+    // Holiday
+    Route::delete('holidays/destroy', [HolidaysController::class , 'massDestroy'])->name('holidays.massDestroy');
+    Route::resource('holidays', HolidaysController::class);
 
     //Employee
     Route::delete('employees/destroy', [EmployeesController::class, 'massDestroy'])->name('employees.massDestroy');
@@ -101,6 +107,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     // leave type
     Route::delete('leaveTypes/destroy', [LeaveTypesController::class , 'massDestroy'])->name('leaveTypes.massDestroy');
     Route::resource('leaveTypes', LeaveTypesController::class);
+
+    // leave type
+    Route::delete('leaveRequests/destroy', [LeaveRequestsController::class , 'massDestroy'])->name('leaveRequests.massDestroy');
+    Route::resource('leaveRequests', LeaveRequestsController::class);
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password

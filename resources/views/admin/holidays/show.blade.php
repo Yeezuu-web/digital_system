@@ -1,19 +1,19 @@
 @extends('layouts.admin')
 
 @section('content')
-@can('department_show')
+@can('holiday_show')
 
 @include('partials.flash-message')
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.department.title_singular') }}
+        {{ trans('global.show') }} {{ trans('cruds.holiday.title_singular') }}
     </div>
 
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-success" href="{{ route('admin.departments.index') }}">
+                <a class="btn btn-success" href="{{ route('admin.holidays.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -21,35 +21,41 @@
                 <tbody>
                     <tr>
                         <th>
-                            {{ trans('cruds.department.fields.title') }}
+                            {{ trans('cruds.holiday.fields.title') }}
                         </th>
                         <td>
-                            {{ $department->title ?? '' }}
+                            {{ $holiday->title ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.department.fields.description') }}
+                            {{ trans('cruds.holiday.fields.commencement_date') }}
                         </th>
                         <td>
-                            {{ $department->description ?? ''}}
+                            {{ $holiday->commencement_date ?? ''}}
                         </td>
                     </tr>
-                    @if ($department->parent)
                     <tr>
                         <th>
-                            {{ trans('cruds.department.fields.head') }}
+                            {{ trans('cruds.holiday.fields.resumption_date') }}
                         </th>
                         <td>
-                            {{ $department->parent->title ?? ''}}
+                            {{ $holiday->resumption_date ?? ''}}
                         </td>
                     </tr>
-                    @endif
+                    <tr>
+                        <th>
+                            {{ trans('cruds.holiday.fields.year') }}
+                        </th>
+                        <td>
+                            {{ $holiday->year ?? ''}}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <br>
             <!-- <div class="form-group">
-                <a class="btn btn-success" href="{{ route('admin.departments.index') }}">
+                <a class="btn btn-success" href="{{ route('admin.holidays.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div> -->

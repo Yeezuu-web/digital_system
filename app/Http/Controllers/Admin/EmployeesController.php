@@ -44,7 +44,7 @@ class EmployeesController extends Controller
 
         // dd($request->all());
 
-        Employee::create($request->all());
+        Employee::create($request->validated());
 
         return redirect()->route('admin.employees.index')
             ->with('success', 'Employee has been create successfully');
@@ -75,7 +75,7 @@ class EmployeesController extends Controller
     
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        $employee->update($request->all());
+        $employee->update($request->validated());
 
         return redirect()->route('admin.employees.index');
     }

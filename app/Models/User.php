@@ -6,6 +6,7 @@ use Hash;
 use Carbon\Carbon;
 use App\Models\Boost;
 use \DateTimeInterface;
+use App\Models\Employee;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -115,5 +116,10 @@ class User extends Authenticatable implements HasMedia
     public function boosts() 
     {
         return $this->hasMany(Boost::class);
+    }
+
+    public function employee() 
+    {
+        return $this->hasOne(Employee::class);
     }
 }

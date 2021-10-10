@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use DateTimeInterface;
 use App\Models\Department;
+use App\Models\LeaveRequest;
 use Illuminate\Database\Eloquent\Model;
 use Znck\Eloquent\Traits\BelongsToThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -64,7 +65,12 @@ class Employee extends Model
     
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->beLongsTo(User::class);
+    }
+
+    public function leaveRequest()
+    {
+        return $this->hasMany(LeaveRequest::class);
     }
 
     public function department()

@@ -17,8 +17,10 @@ class CreateLeaveRequestsTable extends Migration
             $table->id();
             $table->date('commencement_date');
             $table->date('resumption_date');
-            $table->unsignedBigInterger('employee_id');
-            $table->unsignedBigInterger('leave_type_id');
+            $table->integer('no_of_day')->nullable();
+            $table->string('reason');
+            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('leave_type_id');
             $table->integer('status')->default('0');
             $table->timestamps();
             $table->softDeletes();

@@ -38,16 +38,12 @@ $(document).ready(function () {
       }
     })
 
-    $('.yearpicker').datetimepicker({
-      format: 'YYYY',
-      viewMode: 'years',
-      icons: {
-        up: 'fas fa-chevron-up',
-        down: 'fas fa-chevron-down',
-        previous: 'fas fa-chevron-left',
-        next: 'fas fa-chevron-right'
-      }
-    })
+    $('.yearpicker').datepicker({
+      format: "yyyy",
+      viewMode: "years", 
+      minViewMode: "years",
+      autoclose:true
+    }); 
 
     //Date range picker
     $('.daterang').daterangepicker({

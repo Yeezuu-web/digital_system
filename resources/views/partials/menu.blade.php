@@ -55,8 +55,24 @@
                 @can('leave_type_access') 
                     <li class="nav-item {{ request()->is("admin/leaveTypes") || request()->is("admin/leaveTypes/*") ? "active" : "" }}">
                         <a href="{{ route("admin.leaveTypes.index") }}" class="nav-link">
-                            <i class="link-icon" data-feather="user"></i>
+                            <i class="link-icon" data-feather="list"></i>
                             <span class="link-title">{{ trans('global.leave_type') }}</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('holiday_access') 
+                    <li class="nav-item {{ request()->is("admin/holidays") || request()->is("admin/holidays/*") ? "active" : "" }}">
+                        <a href="{{ route("admin.holidays.index") }}" class="nav-link">
+                            <i class="link-icon" data-feather="calendar"></i>
+                            <span class="link-title">{{ trans('global.holiday') }}</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('leave_request_access') 
+                    <li class="nav-item {{ request()->is("admin/leaveRequests") || request()->is("admin/leaveRequests/*") ? "active" : "" }}">
+                        <a href="{{ route("admin.leaveRequests.index") }}" class="nav-link">
+                            <i class="link-icon" data-feather="bookmark"></i>
+                            <span class="link-title">{{ trans('global.leave_request') }}</span>
                         </a>
                     </li>
                 @endcan

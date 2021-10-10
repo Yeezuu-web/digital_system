@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Channel;
+namespace App\Http\Requests\LeaveRequest;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Gate;
+use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-class MassDestroyChannelRequest extends FormRequest
+class MassDestroyLeaveRequestRequest extends FormRequest
 {
     public function authorize()
     {
@@ -19,7 +19,7 @@ class MassDestroyChannelRequest extends FormRequest
     {
         return [
             'ids'   => 'required|array',
-            'ids.*' => 'exists:channels,id',
+            'ids.*' => 'exists:leave_requests,id',
         ];
     }
 }

@@ -36,7 +36,7 @@ class LineManagersController extends Controller
 
     public function store(StoreLineManagerRequest $request)
     {
-        LineManager::create($request->all());
+        LineManager::create($request->validated());
 
         return redirect()->route('admin.lineManagers.index')
             ->with('success', 'Line Manager has been create successfully.');
@@ -61,7 +61,7 @@ class LineManagersController extends Controller
 
     public function update(UpdateLineManagerRequest $request, LineManager $lineManager)
     {
-        $lineManager->update($request->all());
+        $lineManager->update($request->validated());
 
         return redirect()->route('admin.lineManagers.index')
             ->with('success', 'Line Manager has been update successfully.');

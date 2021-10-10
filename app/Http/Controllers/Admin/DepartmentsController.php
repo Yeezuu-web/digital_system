@@ -26,6 +26,7 @@ class DepartmentsController extends Controller
         abort_if(Gate::denies('department_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $departments = Department::pluck('title', 'id');
+
         return view('admin.departments.create', compact('departments'));
     }
     
@@ -39,6 +40,8 @@ class DepartmentsController extends Controller
     
     public function show(Department $department)
     {
+        $department->load(['parent']);
+
         return view('admin.departments.show', compact('department'));
     }
     

@@ -1,57 +1,48 @@
 @extends('layouts.admin')
 
 @section('content')
-@can('employee_create')
+@can('leave_request_create')
 
 @include('partials.flash-message')
 
 <div class="mt-2">
-    <a class="btn btn-success" href="{{ route('admin.employees.create') }}">
-        {{ trans('global.add') }} {{ trans('cruds.employee.title_singular') }}
+    <a class="btn btn-success" href="{{ route('admin.leaveRequests.create') }}">
+        {{ trans('global.add') }} {{ trans('cruds.leaveRequest.title_singular') }}
     </a>
 </div>
 <div class="card mt-3">
     <div class="card-body">
-        <h6 class="card-title">Employee List</h6>
+        <h6 class="card-title">Leave Type List</h6>
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover datatable-Employee">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-LeaveRequest">
                 <thead>
                     <tr>
                         <th width="10">
 
                         </th>
                         <th>
-                            {{ trans('cruds.employee.fields.id') }}
+                            {{ trans('cruds.leaveRequest.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.employee.fields.empId') }}
+                            {{ trans('cruds.leaveRequest.fields.employee') }}
                         </th>
                         <th>
-                            {{ trans('cruds.employee.fields.first_name') }}
+                            {{ trans('cruds.leaveRequest.fields.leave_type') }}
                         </th>
                         <th>
-                            {{ trans('cruds.employee.fields.last_name') }}
+                            {{ trans('cruds.leaveRequest.fields.commencement_date') }}
                         </th>
                         <th>
-                            {{ trans('cruds.employee.fields.gender') }}
+                            {{ trans('cruds.leaveRequest.fields.resumption_date') }}
                         </th>
                         <th>
-                            {{ trans('cruds.employee.fields.eligible') }}
+                            {{ trans('cruds.leaveRequest.fields.no_of_day') }}
                         </th>
                         <th>
-                            {{ trans('cruds.employee.fields.unpaid') }}
+                            {{ trans('cruds.leaveRequest.fields.reason') }}
                         </th>
                         <th>
-                            {{ trans('cruds.employee.fields.hire_date') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.employee.fields.position') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.employee.fields.departement') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.employee.fields.user') }}
+                            {{ trans('cruds.leaveRequest.fields.status') }}
                         </th>
                         <th>
                             &nbsp;
@@ -59,59 +50,50 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($employees as $key => $employee)
-                        <tr data-entry-id="{{ $employee->id }}">
+                    @foreach($leaveRequests as $key => $leaveRequest)
+                        <tr data-entry-id="{{ $leaveRequest->id }}">
                             <td>
 
                             </td>
                             <td>
-                                {{ $employee->id ?? '' }}
+                                {{ $leaveRequest->id ?? '' }}
                             </td>
                             <td>
-                                {{ $employee->empId ?? '' }}
+                                {{ $leaveRequest->employee->first_name ?? '' }} {{ $leaveRequest->employee->last_name ?? '' }}
                             </td>
                             <td>
-                                {{ $employee->first_name ?? '' }}
+                                {{ $leaveRequest->leaveType->title ?? '' }}
                             </td>
                             <td>
-                                {{ $employee->last_name ?? '' }}
+                                {{ $leaveRequest->commencement_date ?? '' }}
                             </td>
                             <td>
-                                {{ $employee->gender ?? '' }}
+                                {{ $leaveRequest->resumption_date ?? '' }}
                             </td>
                             <td>
-                                {{ $employee->eligible_leave ?? ''}} {{ $employee->eligible_leave >= 0 ? 'Day(s)' : '' }}
+                                {{ $leaveRequest->no_of_day ?? '' }}
                             </td>
                             <td>
-                                {{ $employee->leave_taken ?? ''}} {{ $employee->leave_taken >= 0 ? 'Day(s)' : '' }}
+                                {{ $leaveRequest->reason ?? '' }}
                             </td>
                             <td>
-                                {{ $employee->hire_date ?? ''}}
+                                {{ $leaveRequest->status ?? '' }}
                             </td>
                             <td>
-                                {{ $employee->position->title ?? '' }}
-                            </td>
-                            <td>
-                                {{ $employee->department->title ?? '' }}
-                            </td>
-                            <td>
-                                {{ $employee->user->name ?? '' }}
-                            </td>
-                            <td>
-                                @can('employee_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.employees.show', $employee) }}">
+                                @can('leave_request_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.leaveRequests.show', $leaveRequest->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
-                                @can('employee_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.employees.edit', $employee) }}">
+                                @can('leave_request_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.leaveRequests.edit', $leaveRequest->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
-                                @can('employee_delete')
-                                    <form action="{{ route('admin.employees.destroy', $employee) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                @can('leave_request_delete')
+                                    <form action="{{ route('admin.leaveRequests.destroy', $leaveRequest->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -132,9 +114,13 @@
 
 @section('scripts')
 @parent
-
 <script>
     $(function() {
+      let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
+      let csvButtonTrans = '{{ trans('global.datatables.csv') }}'
+      let excelButtonTrans = '{{ trans('global.datatables.excel') }}'
+      let pdfButtonTrans = '{{ trans('global.datatables.pdf') }}'
+      let printButtonTrans = '{{ trans('global.datatables.print') }}'
       let colvisButtonTrans = '{{ trans('global.datatables.colvis') }}'
       let selectAllButtonTrans = '{{ trans('global.select_all') }}'
       let selectNoneButtonTrans = '{{ trans('global.deselect_all') }}'
@@ -166,8 +152,7 @@
         order: [],
         scroller: true,
         scrollX: false,
-        autoWidth: true,
-        pageLength: 50,
+        pageLength: 100,
         dom: 'Bfrtip<"actions">',
         lengthMenu: [
             [ 10, 25, 50, 100, -1 ],
@@ -206,11 +191,11 @@
 <script>
     $(function () {
         let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-        @can('employee_delete')
+        @can('leave_request_delete')
         let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
         let deleteButton = {
             text: deleteButtonTrans,
-            url: "{{ route('admin.employees.massDestroy') }}",
+            url: "{{ route('admin.leaveRequests.massDestroy') }}",
             className: 'btn-danger',
             action: function (e, dt, node, config) {
             var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -240,10 +225,10 @@
             orderCellsTop: true,
             order: [[ 1, 'desc' ]],
             select: false,
-            pageLength: 50,
+            pageLength: 100,
             select: true
         });
-        let table = $('.datatable-Employee:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+        let table = $('.datatable-LeaveRequest:not(.ajaxTable)').DataTable({ buttons: dtButtons })
         $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
             $($.fn.dataTable.tables(true)).DataTable()
                 .columns.adjust();

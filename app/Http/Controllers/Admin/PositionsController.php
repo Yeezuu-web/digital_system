@@ -37,7 +37,7 @@ class PositionsController extends Controller
     {
         abort_if(Gate::denies('position_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        Position::create($request->all());
+        Position::create($request->validated());
 
         return redirect()->route('admin.positions.index')
             ->with('success', 'Position has been create successfully');
@@ -61,7 +61,7 @@ class PositionsController extends Controller
 
     public function update(UpdatePositionRequest $request, Position $position)
     {
-        $position->update($request->all());
+        $position->update($request->validated());
 
         return redirect()->route('admin.positions.index');
     }

@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\CarbonPeriod;
+
 function workdays($start,$end,$holidays){
     $end = strtotime($end);
     $start = strtotime($start);
@@ -41,4 +43,18 @@ $workingDays = $no_full_weeks * 5;
     }
 
     return $workingDays;
+}
+
+function listHolidayPeriod($fromDate, $toDate){
+    $period = CarbonPeriod::create($fromDate, $toDate);
+        
+    // Iterate over the period
+    foreach ($period as $date) {
+        return $date->format('Y-m-d');
+    }
+
+    // Convert the period to an array of dates
+    $dates = $period->toArray();
+
+    return $dates;
 }

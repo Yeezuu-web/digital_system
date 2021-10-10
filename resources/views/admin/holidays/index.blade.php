@@ -1,57 +1,34 @@
 @extends('layouts.admin')
 
 @section('content')
-@can('employee_create')
-
 @include('partials.flash-message')
 
 <div class="mt-2">
-    <a class="btn btn-success" href="{{ route('admin.employees.create') }}">
-        {{ trans('global.add') }} {{ trans('cruds.employee.title_singular') }}
+    <a class="btn btn-success" href="{{ route('admin.holidays.create') }}">
+        {{ trans('global.add') }} {{ trans('cruds.holiday.title_singular') }}
     </a>
 </div>
 <div class="card mt-3">
     <div class="card-body">
-        <h6 class="card-title">Employee List</h6>
+        <h6 class="card-title">Holiday List</h6>
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover datatable-Employee">
+            <table class="table table-bordered table-striped table-hover datatable datatable-Holiday">
                 <thead>
                     <tr>
                         <th width="10">
 
                         </th>
                         <th>
-                            {{ trans('cruds.employee.fields.id') }}
+                            {{ trans('cruds.holiday.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.employee.fields.empId') }}
+                            {{ trans('cruds.holiday.fields.title') }}
                         </th>
                         <th>
-                            {{ trans('cruds.employee.fields.first_name') }}
+                            {{ trans('cruds.holiday.fields.dates') }}
                         </th>
                         <th>
-                            {{ trans('cruds.employee.fields.last_name') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.employee.fields.gender') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.employee.fields.eligible') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.employee.fields.unpaid') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.employee.fields.hire_date') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.employee.fields.position') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.employee.fields.departement') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.employee.fields.user') }}
+                            {{ trans('cruds.holiday.fields.year') }}
                         </th>
                         <th>
                             &nbsp;
@@ -59,59 +36,40 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($employees as $key => $employee)
-                        <tr data-entry-id="{{ $employee->id }}">
+                    @foreach($holidays as $key => $holiday)
+                        <tr data-entry-id="{{ $holiday->id }}">
                             <td>
 
                             </td>
                             <td>
-                                {{ $employee->id ?? '' }}
+                                {{ $holiday->id ?? '' }}
                             </td>
                             <td>
-                                {{ $employee->empId ?? '' }}
+                                {{ $holiday->title ?? '' }}
                             </td>
                             <td>
-                                {{ $employee->first_name ?? '' }}
+                                @foreach ($holiday->dates as $item) 
+                                    <span class="badge badge-info">{{ $item }}</span>
+                                @endforeach
                             </td>
                             <td>
-                                {{ $employee->last_name ?? '' }}
+                                {{ $holiday->year ?? '' }}
                             </td>
                             <td>
-                                {{ $employee->gender ?? '' }}
-                            </td>
-                            <td>
-                                {{ $employee->eligible_leave ?? ''}} {{ $employee->eligible_leave >= 0 ? 'Day(s)' : '' }}
-                            </td>
-                            <td>
-                                {{ $employee->leave_taken ?? ''}} {{ $employee->leave_taken >= 0 ? 'Day(s)' : '' }}
-                            </td>
-                            <td>
-                                {{ $employee->hire_date ?? ''}}
-                            </td>
-                            <td>
-                                {{ $employee->position->title ?? '' }}
-                            </td>
-                            <td>
-                                {{ $employee->department->title ?? '' }}
-                            </td>
-                            <td>
-                                {{ $employee->user->name ?? '' }}
-                            </td>
-                            <td>
-                                @can('employee_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.employees.show', $employee) }}">
+                                @can('holiday_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.holidays.show', $holiday) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
-                                @can('employee_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.employees.edit', $employee) }}">
+                                @can('holiday_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.holidays.edit', $holiday) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
-                                @can('employee_delete')
-                                    <form action="{{ route('admin.employees.destroy', $employee) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                @can('holiday_delete')
+                                    <form action="{{ route('admin.holidays.destroy', $holiday) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -127,14 +85,16 @@
         </div>
     </div>
 </div>
-@endcan
 @endsection
-
 @section('scripts')
 @parent
-
 <script>
     $(function() {
+      let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
+      let csvButtonTrans = '{{ trans('global.datatables.csv') }}'
+      let excelButtonTrans = '{{ trans('global.datatables.excel') }}'
+      let pdfButtonTrans = '{{ trans('global.datatables.pdf') }}'
+      let printButtonTrans = '{{ trans('global.datatables.print') }}'
       let colvisButtonTrans = '{{ trans('global.datatables.colvis') }}'
       let selectAllButtonTrans = '{{ trans('global.select_all') }}'
       let selectNoneButtonTrans = '{{ trans('global.deselect_all') }}'
@@ -166,8 +126,7 @@
         order: [],
         scroller: true,
         scrollX: false,
-        autoWidth: true,
-        pageLength: 50,
+        pageLength: 100,
         dom: 'Bfrtip<"actions">',
         lengthMenu: [
             [ 10, 25, 50, 100, -1 ],
@@ -202,15 +161,15 @@
       $.fn.dataTable.ext.classes.sPageButton = '';
     });
 
-</script>
+  </script>
 <script>
     $(function () {
         let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-        @can('employee_delete')
+        @can('holiday_delete')
         let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
         let deleteButton = {
             text: deleteButtonTrans,
-            url: "{{ route('admin.employees.massDestroy') }}",
+            url: "{{ route('admin.holidays.massDestroy') }}",
             className: 'btn-danger',
             action: function (e, dt, node, config) {
             var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -240,10 +199,10 @@
             orderCellsTop: true,
             order: [[ 1, 'desc' ]],
             select: false,
-            pageLength: 50,
+            pageLength: 100,
             select: true
         });
-        let table = $('.datatable-Employee:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+        let table = $('.datatable-Holiday:not(.ajaxTable)').DataTable({ buttons: dtButtons })
         $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
             $($.fn.dataTable.tables(true)).DataTable()
                 .columns.adjust();

@@ -125,6 +125,8 @@
 	<!-- core:js -->
 	<script src="{{ asset('assets/vendors/core/core.js') }}"></script>
 	<!-- endinject -->
+	<!-- Laravel Javascript Validation -->	
+	<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 	<!-- plugin js for global -->
 	<script src="{{ asset('assets/vendors/select2/select2.min.js') }}"></script>
 	<script src="{{ asset('assets/vendors/DataTables/DataTables-1.10.25/js/jquery.dataTables.js') }}"></script>
