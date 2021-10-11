@@ -12,12 +12,12 @@
     <div class="card-body">
         <form action="{{ route("admin.leaveRequests.store") }}" method="POST">
             @csrf
-            @if($employee->isEmpty())
+            @if(empty($employee))
             <div class="alert alert-danger" role="alert">
                 <span>* Please assign your user to employee before make a request</span>
             </div>
             @endif
-            @if(!$employee->isEmpty())
+            @if(!empty($employee))
             <div class="form-group">
                 <label for="employee_id" class="required">{{ trans('cruds.leaveRequest.fields.employee')}} <span class="text-danger">*</span></label>
                 <select class="form-control @error('employee_id') form-control-danger @enderror" name="employee_id" id="employee_id" required>
@@ -28,13 +28,13 @@
                 @enderror
             </div>
             @endif
-
+                
             <div class="form-group">
                 <label for="leave_type_id" class="required">{{ trans('cruds.leaveRequest.fields.leave_type')}} <span class="text-danger">*</span></label>
                 <select class="js-example-basic-single w-100 select2-hidden-accessible @error('leave_type_id') form-control-danger @enderror" name="leave_type_id" data-width="100%" aria-hidden="true">
-                    <option value=""​>--- Choose leave type ---</option>
+                    <option value="">--- Choose leave type ---</option>
                     @foreach ($leaveTypes as $id => $leaveType)
-                        <option value="{{ $id }}"​>{{ $leaveType }}</option>
+                        <option value="{{ $id }}">{{ $leaveType }}</option>
                     @endforeach
                 </select>
                 @error('leave_type_id')
@@ -101,5 +101,5 @@
 @endsection
 @section('scripts')
 @parent
-{!! JsValidator::formRequest('App\Http\Requests\leaveRequest\StoreleaveRequestRequest') !!}
+{!! JsValidator::formRequest('App\Http\Requests\LeaveRequest\StoreLeaveRequestRequest') !!}
 @endsection

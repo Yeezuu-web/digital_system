@@ -114,7 +114,7 @@ class LeaveRequestsController extends Controller
 
     public function firstApprove(LeaveRequest $leaveRequest)
     {
-        // abort_if(Gate::denies('leaveRequest_reviewer'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('leaveRequest_reviewer'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $employee = Employee::findOrfail($leaveRequest->employee_id);
 
@@ -123,7 +123,7 @@ class LeaveRequestsController extends Controller
 
     public function firstApproveUpdate(Request $request, $id)
     {
-        // abort_if(Gate::denies('leaveRequest_reviewer'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('leaveRequest_reviewer'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         
         $leaveRequest = LeaveRequest::findOrfail($id);
         
@@ -163,7 +163,7 @@ class LeaveRequestsController extends Controller
 
     public function secondApprove(leaveRequest $leaveRequest)
     {
-        // abort_if(Gate::denies('leaveRequest_approver'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('leaveRequest_approver'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $leaveRequest->load(['user']);
 
@@ -174,7 +174,7 @@ class LeaveRequestsController extends Controller
 
     public function secondApproveUpdate(Request $request, $id)
     {
-        // abort_if(Gate::denies('leaveRequest_approver'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('leaveRequest_approver'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $leaveRequest = leaveRequest::findOrfail($id);
 

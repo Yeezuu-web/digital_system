@@ -30,6 +30,9 @@ class UpdatePositionRequest extends FormRequest
                 'string',
                 'required',
             ],
+            'department_id' => [
+                'required',
+            ],
         ];
     }
 }

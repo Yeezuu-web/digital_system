@@ -22,31 +22,31 @@
                     <tbody>
                         <tr>
                             <td width="30">Employee</td>
-                            <td>{{ $employee->first_name }} {{ $employee->last_name }}</td>
+                            <td>{{ $employee->first_name ?? ''}} {{ $employee->last_name ?? ''}}</td>
                         </tr>
                         <tr>
                             <td width="30">Employee ID</td>
-                            <td>{{ $employee->empId }}</td>
+                            <td>{{ $employee->empId ?? ''}}</td>
                         </tr>
                         <tr>
                             <td width="30">Commencement Date</td>
-                            <td>{{ $leaveRequest->commencement_date }}</td>
+                            <td>{{ $leaveRequest->commencement_date ?? ''}}</td>
                         </tr>
                         <tr>
                             <td width="30">Resumption Date</td>
-                            <td>{{ $leaveRequest->resumption_date }}</td>
+                            <td>{{ $leaveRequest->resumption_date ?? ''}}</td>
                         </tr>
                         <tr>
                             <td width="30">No of day</td>
-                            <td>{{ $leaveRequest->no_of_day }}</td>
+                            <td>{{ $leaveRequest->no_of_day ?? ''}}</td>
                         </tr>
                         <tr>
                             <td width="30">Reason</td>
-                            <td>{{ $leaveRequest->reason }}</td>
+                            <td>{{ $leaveRequest->reason ?? ''}}</td>
                         </tr>
                         <tr>
                             <td width="30">First Approve By</td>
-                            <td>{{ $leaveRequest->reviewedBy }}</td>
+                            <td>{{ $leaveRequest->user->name ?? ''}}</td>
                         </tr>
                     </tbody>
                 </table>

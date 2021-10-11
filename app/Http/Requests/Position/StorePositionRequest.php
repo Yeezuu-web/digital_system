@@ -30,6 +30,9 @@ class StorePositionRequest extends FormRequest
                 'string',
                 'required',
             ],
+            'department_id' => [
+                'required',
+            ],
         ];
     }
 }
