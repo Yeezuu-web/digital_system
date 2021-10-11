@@ -12,6 +12,12 @@
     <div class="card-body">
         <form action="{{ route("admin.leaveRequests.store") }}" method="POST">
             @csrf
+            @if($employee->isEmpty())
+            <div class="alert alert-danger" role="alert">
+                <span>* Please assign your user to employee before make a request</span>
+            </div>
+            @endif
+            @if(!$employee->isEmpty())
             <div class="form-group">
                 <label for="employee_id" class="required">{{ trans('cruds.leaveRequest.fields.employee')}} <span class="text-danger">*</span></label>
                 <select class="form-control @error('employee_id') form-control-danger @enderror" name="employee_id" id="employee_id" required>
@@ -21,6 +27,7 @@
                 <span class="error mt-2 text-danger">{{ $message }}</span>
                 @enderror
             </div>
+            @endif
 
             <div class="form-group">
                 <label for="leave_type_id" class="required">{{ trans('cruds.leaveRequest.fields.leave_type')}} <span class="text-danger">*</span></label>

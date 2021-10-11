@@ -19,7 +19,7 @@ class LeaveRequest extends Model
     protected $table = "leave_requests";
 
     protected $fillable = [
-        'commencement_date', 'resumption_date', 'no_of_day', 'reason', 'employee_id', 'leave_type_id', 'status', 'reviewed_at', 'approved_at', 'reviewed_by', 'approved_by'
+        'commencement_date', 'resumption_date', 'no_of_day', 'reason', 'employee_id', 'leave_type_id', 'status', 'reviewed_at', 'approved_at', 'user_id'
     ];
 
     protected $dates = [
