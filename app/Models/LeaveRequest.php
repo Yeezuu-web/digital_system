@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use DateTimeInterface;
 use App\Models\Employee;
+use App\Models\User;
 use App\Models\LeaveType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,13 +19,15 @@ class LeaveRequest extends Model
     protected $table = "leave_requests";
 
     protected $fillable = [
-        'commencement_date', 'resumption_date', 'no_of_day', 'reason', 'employee_id', 'leave_type_id', 'status'
+        'commencement_date', 'resumption_date', 'no_of_day', 'reason', 'employee_id', 'leave_type_id', 'status', 'reviewed_at', 'approved_at', 'reviewed_by', 'approved_by'
     ];
 
     protected $dates = [
         'commencement_date',
         'resumption_date',
         'commencement_date',
+        'reviewed_at',
+        'approved_at',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -53,5 +56,10 @@ class LeaveRequest extends Model
     public function leaveType()
     {
         return $this->beLongsTo(LeaveType::class);
+    }
+
+    public function user()
+    {
+        return $this->beLongsTo(User::class);
     }
 }

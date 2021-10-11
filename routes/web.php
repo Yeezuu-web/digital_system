@@ -108,7 +108,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::delete('leaveTypes/destroy', [LeaveTypesController::class , 'massDestroy'])->name('leaveTypes.massDestroy');
     Route::resource('leaveTypes', LeaveTypesController::class);
 
-    // leave type
+    // leave requset
+    Route::get('leaveRequests/{leaveRequest}/firstApprove', [LeaveRequestsController::class , 'firstApprove'])->name('leaveRequests.firstApprove');
+    Route::post('leaveRequests/firstApprove/update/{leaveRequest}', [LeaveRequestsController::class , 'firstApproveUpdate'])->name('leaveRequests.firstApproveUpdate');
+    Route::get('leaveRequests/{leaveRequest}/secondApprove', [LeaveRequestsController::class , 'secondApprove'])->name('leaveRequests.secondApprove');
+    Route::post('leaveRequests/secondApprove/update/{leaveRequest}', [LeaveRequestsController::class , 'secondApproveUpdate'])->name('leaveRequests.secondApproveUpdate');
     Route::delete('leaveRequests/destroy', [LeaveRequestsController::class , 'massDestroy'])->name('leaveRequests.massDestroy');
     Route::resource('leaveRequests', LeaveRequestsController::class);
 });
