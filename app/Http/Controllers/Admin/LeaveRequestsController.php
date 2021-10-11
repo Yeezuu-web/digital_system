@@ -66,7 +66,7 @@ class LeaveRequestsController extends Controller
        
         \Mail::to($lineManagerUser->user->email)->send(new \App\Mail\LeaveRequestMail($details));
 
-        return redirect()->route('admin.leaveRequests.index')
+        return redirect()->route('admin.leaveRequests.record')
             ->with('success', 'Leave Request has been request successfully.');
     }
 
@@ -187,7 +187,7 @@ class LeaveRequestsController extends Controller
             
             if($employee->eligible_leave > 0 && $newEligible > 0){
                 
-                $employee->update(['eligible_leave' => $newEligigle]);
+                $employee->update(['eligible_leave' => $newEligible]);
                 
             }elseif($employee->eligible = 0 || $newEligible <= 0){
                 
@@ -205,5 +205,25 @@ class LeaveRequestsController extends Controller
             return response('Opss', 402);
         }
         return response('success', 200);
+    }
+
+    public function record()
+    {
+        abort_if(Gate::denies('leave_request_record'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        auth()->user()->load(['employee']);
+
+        $leaveRequests = [];
+
+        if(!empty(auth()->user()->employee)){
+
+            $employee = auth()->user()->employee;
+
+            $employee->load(['leaveRequests']);
+
+            $leaveRequests = $employee->leaveRequests;
+        }
+        
+        return view('admin.leaveRequests.record', compact('leaveRequests'));
     }
 }

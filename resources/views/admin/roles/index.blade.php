@@ -23,7 +23,6 @@
 <div class="card">
     <div class="card-body">
         <h6 class="card-title">{{ trans('cruds.role.title_singular') }} {{ trans('global.list') }}</h6>
-        <p class="card-description">Read the <a href="https://datatables.net/" target="_blank"> Official DataTables Documentation </a>for a full list of instructions and other options.</p>
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover datatable datatable-Role">
                 <thead>
@@ -64,13 +63,13 @@
                             </td>
                             <td>
                                 @can('role_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.roles.show', $role->id) }}">
+                                    <a class="btn btn-xs btn-primary mr-2" href="{{ route('admin.roles.show', $role->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
                                 @can('role_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.roles.edit', $role->id) }}">
+                                    <a class="btn btn-xs btn-info mr-2" href="{{ route('admin.roles.edit', $role->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
@@ -96,7 +95,7 @@
 @endsection
 @section('scripts')
 @parent
-@include('partials.script') --}}
+@include('partials.script')
 <script>
     $(function () {
     let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)

@@ -77,7 +77,15 @@
                                 {{ $leaveRequest->reason ?? '' }}
                             </td>
                             <td>
-                                {{ $leaveRequest->status ?? '' }}
+                                @if ($leaveRequest->status == '0')
+                                    <span class="badge badge-info">In Review</span>
+                                @elseif ($leaveRequest->status == '1')
+                                    <span class="badge badge-warning">First Approved</span>
+                                @elseif ($leaveRequest->status == '2')
+                                    <span class="badge badge-success">Approved</span>
+                                @else
+                                    <span class="badge badge-danger">First Approved</span>
+                                @endif
                             </td>
                             <td>
                                 @can('leave_request_show')

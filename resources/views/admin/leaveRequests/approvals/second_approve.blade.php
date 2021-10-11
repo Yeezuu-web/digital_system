@@ -97,8 +97,8 @@
 
         $.ajax({
             type: "POST",
-            url: "/system/admin/leaveRequests/secondApprove/update/" + id, // on production
-            // url: "/admin/leaveRequests/secondApprove/update/" + id, // on developement
+            // url: "/system/admin/leaveRequests/secondApprove/update/" + id, // on production
+            url: "/admin/leaveRequests/secondApprove/update/" + id, // on developement
             data: {
                 _token: _token,
                 action: action,

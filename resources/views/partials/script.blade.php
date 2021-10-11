@@ -48,6 +48,7 @@
             [ 10, 25, 50, 100, -1 ],
             [ '10 rows', '25 rows', '50 rows', '1000 rows', 'Show all' ]
         ],
+        responsive: true,
         buttons: [
           'pageLength',
           {

@@ -69,10 +69,34 @@
                     </li>
                 @endcan
                 @can('leave_request_access') 
-                    <li class="nav-item {{ request()->is("admin/leaveRequests") || request()->is("admin/leaveRequests/*") ? "active" : "" }}">
+                    <li class="nav-item {{ request()->is("admin/leaveRequests") || request()->is("admin/leaveRequests/show") || request()->is("admin/leaveRequests/edit") ? "active" : "" }}">
                         <a href="{{ route("admin.leaveRequests.index") }}" class="nav-link">
                             <i class="link-icon" data-feather="bookmark"></i>
                             <span class="link-title">{{ trans('global.leave_request') }}</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('leave_request_record') 
+                    <li class="nav-item {{ request()->is("admin/leaveRequests/record") || request()->is("admin/leaveRequests/record") ? "active" : "" }}">
+                        <a href="{{ route("admin.leaveRequests.record") }}" class="nav-link">
+                            <i class="link-icon" data-feather="archive"></i>
+                            <span class="link-title">Leave Record</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('leave_request_create') 
+                    <li class="nav-item {{ request()->is("admin/leaveRequests/create") || request()->is("admin/leaveRequests/create") ? "active" : "" }}">
+                        <a href="{{ route("admin.leaveRequests.create") }}" class="nav-link">
+                            <i class="link-icon" data-feather="send"></i>
+                            <span class="link-title">Create Leave Request</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('leaveRequest_approver') 
+                    <li class="nav-item {{ request()->is("admin/hr/report") ? "active" : "" }}">
+                        <a href="{{ route("admin.hr.report") }}" class="nav-link">
+                            <i class="link-icon" data-feather="file-text"></i>
+                            <span class="link-title">Leave Report</span>
                         </a>
                     </li>
                 @endcan

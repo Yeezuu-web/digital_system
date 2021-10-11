@@ -69,7 +69,7 @@ class Employee extends Model
         return $this->beLongsTo(User::class);
     }
 
-    public function leaveRequest()
+    public function leaveRequests()
     {
         return $this->hasMany(LeaveRequest::class);
     }
