@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Gate;
 use App\Models\Employee;
 use App\Models\LeaveType;
+use App\Models\Department;
 use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,7 +27,9 @@ class LeaveRequestsController extends Controller
     {
         abort_if(Gate::denies('leave_request_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $employee = Employee::findOrfail(auth()->user()->id);
+        $id = auth()->user()->id;
+        
+        $employee = Employee::where('user_id', $id)->first();
 
         $leaveTypes = LeaveType::pluck('title', 'id');
 
@@ -35,10 +38,22 @@ class LeaveRequestsController extends Controller
 
     public function store(StoreLeaveRequestRequest $request)
     {
-        $employee = Employee::findOrfail($request->employee_id);
-
-        $leaveRequest = LeaveRequest::create($request->validated());
+        $employee = Employee::with(['department', 'lineManager'])->where('id', $request->employee_id)->first();
         
+        if(empty($employee->lineManager)){
+            $department = Department::with('lineManager')->where('id', $employee->department->id)->first();
+            
+            $lineManagerUser = Employee::with('user')->where('id', $department->lineManager->employee_id)->first();
+        }
+        elseif(!empty($employee->lineManager)){
+            $headDepartment = Department::with(['parent'])->where('id', $employee->department->id)->first();
+            
+            $headDepartment->parent->load(['lineManager']);
+            
+            $lineManagerUser = Employee::with('user')->where('id', $headDepartment->parent->lineManager->employee_id)->first();
+        }
+        
+        $leaveRequest = LeaveRequest::create($request->validated());
         $route = route('admin.leaveRequests.firstApprove', $leaveRequest);
 
         $details = [
@@ -49,7 +64,7 @@ class LeaveRequestsController extends Controller
             'link' => $route,
         ];
        
-        \Mail::to('piseth.chhun@ctn.com.kh')->send(new \App\Mail\LeaveRequestMail($details));
+        \Mail::to($lineManagerUser->user->email)->send(new \App\Mail\LeaveRequestMail($details));
 
         return redirect()->route('admin.leaveRequests.index')
             ->with('success', 'Leave Request has been request successfully.');
@@ -99,7 +114,7 @@ class LeaveRequestsController extends Controller
 
     public function firstApprove(LeaveRequest $leaveRequest)
     {
-        // abort_if(Gate::denies('leaveRequest_reviewer'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('leaveRequest_reviewer'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $employee = Employee::findOrfail($leaveRequest->employee_id);
 
@@ -108,10 +123,10 @@ class LeaveRequestsController extends Controller
 
     public function firstApproveUpdate(Request $request, $id)
     {
-        // abort_if(Gate::denies('leaveRequest_reviewer'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+        abort_if(Gate::denies('leaveRequest_reviewer'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         
         $leaveRequest = LeaveRequest::findOrfail($id);
+        
         $employee = Employee::findOrfail($leaveRequest->employee_id);
         
         if ( $request->action == 'approve' ) {
@@ -148,7 +163,7 @@ class LeaveRequestsController extends Controller
 
     public function secondApprove(leaveRequest $leaveRequest)
     {
-        // abort_if(Gate::denies('leaveRequest_approver'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('leaveRequest_approver'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $leaveRequest->load(['user']);
 
@@ -159,12 +174,27 @@ class LeaveRequestsController extends Controller
 
     public function secondApproveUpdate(Request $request, $id)
     {
-        // abort_if(Gate::denies('leaveRequest_approver'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('leaveRequest_approver'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $leaveRequest = leaveRequest::findOrfail($id);
 
         if ($request->action == 'approve') {
             $now = now();
+            
+            $employee = Employee::findOrfail($leaveRequest->employee_id);
+            
+            $newEligible = $employee->eligible_leave - $leaveRequest->no_of_day;
+            
+            if($employee->eligible_leave > 0 && $newEligible > 0){
+                
+                $employee->update(['eligible_leave' => $newEligigle]);
+                
+            }elseif($employee->eligible = 0 || $newEligible <= 0){
+                
+                $employee->update(['eligible_leave' => 0, 'leave_taken' => abs($newEligible)]);
+                
+            }
+            
             $leaveRequest->update(['status' => '2', 'approved_at' => $now]);
 
         }elseif($request->action == 'reject'){

@@ -5,6 +5,7 @@ namespace App\Models;
 use DateTimeInterface;
 use App\Models\Employee;
 use App\Models\Position;
+use App\Models\LineManager;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,5 +52,10 @@ class Department extends Model
     public function employees()
     {
         return $this->hasManyThrough(Employee::class, Position::class);
+    }
+    
+    public function lineManager()
+    {
+        return $this->hasOne(LineManager::class);
     }
 }

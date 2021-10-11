@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use DateTimeInterface;
 use App\Models\Department;
+use App\Models\LineManager;
 use App\Models\LeaveRequest;
 use Illuminate\Database\Eloquent\Model;
 use Znck\Eloquent\Traits\BelongsToThrough;
@@ -76,5 +77,10 @@ class Employee extends Model
     public function department()
     {
         return $this->belongsToThrough(Department::class, Position::class)->withTrashed('positons.deleted_at');
+    }
+    
+    public function lineManager()
+    {
+        return $this->hasOne(LineManager::class);
     }
 }
