@@ -51,8 +51,6 @@ class StoreEmployeeRequest extends FormRequest
             'user_id' => [
                 'required'
             ],
-            
-
         ];
     }
 }

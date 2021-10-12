@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -36,5 +37,24 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function login(Request $request)
+    {
+        $input = $request->all();
+
+        $this->validate($request, [
+            'empId'     => 'required',
+            'password'     => 'required'
+        ]);
+
+        $fieldType = filter_var($request->empId, FILTER_VALIDATE_EMAIL) ? 'email' : 'empId';
+    
+        if(auth()->attempt(array($fieldType => $input['empId'], 'password' => $input['password'])))
+        {
+            return redirect()->route('admin');
+        }else{
+            return back()->with('error', 'Credentails is incorrecr.');
+        }
     }
 }

@@ -42,9 +42,13 @@ class EmployeesController extends Controller
     {
         abort_if(Gate::denies('employee_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // dd($request->all());
+        $employee = Employee::create($request->validated());
 
-        Employee::create($request->validated());
+        $employee->load(['user']);
+
+        $user = $employee->user;
+
+        $user->update(['empId' => $employee->empId]);
 
         return redirect()->route('admin.employees.index')
             ->with('success', 'Employee has been create successfully');
@@ -76,6 +80,12 @@ class EmployeesController extends Controller
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         $employee->update($request->validated());
+
+        $employee->load(['user']);
+
+        $user = $employee->user;
+
+        $user->update(['empId' => $employee->empId]);
 
         return redirect()->route('admin.employees.index');
     }

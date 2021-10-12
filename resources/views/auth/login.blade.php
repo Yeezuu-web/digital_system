@@ -99,38 +99,30 @@
                         <h5 class="text-muted font-weight-normal mb-4">Welcome back! Log in to your account.
                         </h5>
 
-                        @if(session()->has('message'))
-                        <p class="alert alert-info">
-                            {{ session()->get('message') }}
-                        </p>
-                        @endif
+                        @include('partials.flash-message')
 
                         <form action="{{ route('login') }}" class="forms-sample" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input id="email" type="email"
-                                    class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" required
-                                    autocomplete="email" autofocus placeholder="{{ trans('global.login_email') }}"
-                                    name="email" value="{{ old('email', null) }}">
+                                <label for="empId">Employee ID or Email address</label>
+                                <input id="empId" type="text"
+                                    class="form-control  @error('empId') form-control-danger @enderror" required
+                                    autocomplete="empId" autofocus placeholder="Employee ID or {{ trans('global.login_email') }}"
+                                    name="empId" value="{{ old('empId', null) }}">
 
-                                @if($errors->has('email'))
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('email') }}
-                                </div>
-                                @endif
+                                @error('empId')
+                                    <label id="title-error" class="error mt-2 text-danger" for="title">{{ $message }}</label>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Password</label>
                                 <input id="password" type="password"
-                                    class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
+                                    class="form-control @error('empId') form-control-danger @enderror"
                                     name="password" required placeholder="{{ trans('global.login_password') }}">
 
-                                @if($errors->has('password'))
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('password') }}
-                                </div>
-                                @endif
+                                @error('password')
+                                    <label id="title-error" class="error mt-2 text-danger" for="title">{{ $message }}</label>
+                                @enderror
                             </div>
                             <div class="form-check form-check-flat form-check-primary">
                                 <label class="form-check-label">
