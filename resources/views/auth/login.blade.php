@@ -83,6 +83,13 @@
 @endsection --}}
 
 @extends('layouts.guest')
+@section('styles')
+    <style>
+        .auth-left-wrapper{
+            background-image: url('http://127.0.0.1:8000/img/Banner_System_Boosting_Facebook.jpg') !important;
+        }
+    </style>
+@endsection
 @section('content')
 <div class="row w-100 mx-0 auth-page">
     <div class="col-md-8 col-xl-6 mx-auto">
@@ -90,7 +97,6 @@
             <div class="row">
                 <div class="col-md-4 pr-md-0">
                     <div class="auth-left-wrapper">
-                        {{-- <img src="{{config('app.url')}}/storage/main-img/img.png" alt=""> --}}
                     </div>
                 </div>
                 <div class="col-md-8 pl-md-0">
@@ -107,7 +113,7 @@
                                 <label for="empId">Employee ID or Email address</label>
                                 <input id="empId" type="text"
                                     class="form-control  @error('empId') form-control-danger @enderror" required
-                                    autocomplete="empId" autofocus placeholder="Employee ID or {{ trans('global.login_email') }}"
+                                    autocomplete="empId" autofocus
                                     name="empId" value="{{ old('empId', null) }}">
 
                                 @error('empId')
@@ -118,7 +124,7 @@
                                 <label for="exampleInputPassword1">Password</label>
                                 <input id="password" type="password"
                                     class="form-control @error('empId') form-control-danger @enderror"
-                                    name="password" required placeholder="{{ trans('global.login_password') }}">
+                                    name="password" required>
 
                                 @error('password')
                                     <label id="title-error" class="error mt-2 text-danger" for="title">{{ $message }}</label>

@@ -52,9 +52,9 @@ class LoginController extends Controller
     
         if(auth()->attempt(array($fieldType => $input['empId'], 'password' => $input['password'])))
         {
-            return redirect()->route('admin');
+            return redirect('/admin');
         }else{
-            return back()->with('error', 'Credentails is incorrecr.');
+            return back()->with('error', 'Employee ID, email or password is incorrecr.');
         }
     }
 }
