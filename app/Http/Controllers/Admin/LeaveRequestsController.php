@@ -57,6 +57,15 @@ class LeaveRequestsController extends Controller
         }
         
         $leaveRequest = LeaveRequest::create($request->validated());
+
+        foreach ($request->input('attachments', []) as $file) {
+            $leaveRequest->addMedia(storage_path('tmp/uploads/' . basename($file)))->toMediaCollection('attachments');
+        }
+
+        if ($media = $request->input('ck-media', false)) {
+            Media::whereIn('id', $media)->update(['model_id' => $leaveRequest->id]);
+        }
+
         $route = route('admin.leaveRequests.firstApprove', $leaveRequest);
 
         $details = [
@@ -121,6 +130,8 @@ class LeaveRequestsController extends Controller
 
         $employee = Employee::findOrfail($leaveRequest->employee_id);
 
+        $leaveRequest->load(['leaveType']);
+
         return view('admin.leaveRequests.approvals.first_approve', compact('leaveRequest', 'employee'));
     }
 
@@ -133,6 +144,52 @@ class LeaveRequestsController extends Controller
         $employee = Employee::findOrfail($leaveRequest->employee_id);
         
         if ( $request->action == 'approve' ) {
+            if(empty($employee->lineManager)){
+                $department = Department::with('lineManager')->where('id', $employee->department->id)->first();
+                
+                $firstlineManager = Employee::with('lineManager')->where('id', $department->lineManager->employee_id)->first();
+            }
+            elseif(!empty($employee->lineManager)){
+                $headDepartment = Department::with(['parent'])->where('id', $employee->department->id)->first();
+                
+                $headDepartment->parent->load(['lineManager']);
+                
+                $firstlineManager = Employee::with('lineManager')->where('id', $headDepartment->parent->lineManager->employee_id)->first();
+            }
+
+            try {
+                $headDepartmentLineManager =  Department::with(['parent'])->where('id', $firstlineManager->department->id)->first();
+                
+                $parentDep = $headDepartmentLineManager->parent;
+
+                if(!empty($parentDep))
+                {
+                    $parentDep->load(['lineManager']);
+    
+                    $parentDepLineManager = $parentDep->lineManager;
+    
+                    $parentDepLineManager->load(['employee']);
+    
+                    $employeeAssecondLineManager = $parentDepLineManager->employee;
+    
+                    $employeeAssecondLineManager->load(['user']);
+                    
+                    $email = $employeeAssecondLineManager->user->email;
+                }else{
+                    // The after last Employee (COO to CEO) spacial condition
+                    $now = now();
+                    $leaveRequest->update(['status' => '2', 'approved_at' => $now]);
+
+                    $leaveRequest->user()->associate($request->reviewedBy)->save();
+
+                }
+                
+            }catch(e){
+                return e;
+            }
+
+            dd($email);
+            
             $now = now();
             $leaveRequest->update(['status' => '1', 'reviewed_at' => $now]);
 
@@ -148,7 +205,8 @@ class LeaveRequestsController extends Controller
                 'link' => $route,
             ];
            
-            \Mail::to('piseth.chhun@ctn.com.kh')->send(new \App\Mail\LeaveRequestMail($details));
+            \Mail::to($email)->send(new \App\Mail\LeaveRequestMail($details));
+            
         }elseif ( $request->action == 'reject' ) {
             $now = now();
             $leaveRequest->update(['status' => '4', 'reviewed_at' => $now]);

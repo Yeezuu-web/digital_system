@@ -1207,11 +1207,11 @@ pre {
   border: 0; }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #080e1b; }
+  background-color: var(--theme-50); }
 
 .table-hover tbody tr:hover {
-  color: var(--text-primary);
-  background-color: #080e1b; }
+  color: var(---primary);
+  background-color: var(--theme-50); }
 
 .table-primary,
 .table-primary > th,

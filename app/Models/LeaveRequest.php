@@ -47,14 +47,14 @@ class LeaveRequest extends Model implements HasMedia
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
-    public function getCommencementDareAttribute($value)
+    public function getCommencementDateAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
     }
 
-    public function setCommencementDareAttribute($value)
+    public function setCommencementDateAttribute($value)
     {
-        $this->attributes['commencement_dare'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+        $this->attributes['commencecommencement_datement_dare'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
     public function getResumptionDateAttribute($value)

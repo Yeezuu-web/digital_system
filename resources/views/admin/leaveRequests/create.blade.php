@@ -90,7 +90,7 @@
             </div>
 
             <div class="form-group">
-                <label for="attachments">{{ trans('cruds.leaveRequest.fields.attachments') }} <span class="text-danger">*</span></label>
+                <label for="attachments">{{ trans('cruds.leaveRequest.fields.attachments') }} </label>
                 <div class="needsclick dropzone @error('attachments') is-invalid @enderror" id="attachments-dropzone">
                 </div>
                 @error('attachments')
