@@ -10,10 +10,13 @@ use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\LeaveRequest\StoreLeaveRequestRequest;
 
 class LeaveRequestsController extends Controller
 {
+    use MediaUploadingTrait; 
+    
     public function index()
     {
         abort_if(Gate::denies('leave_request_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -225,5 +228,17 @@ class LeaveRequestsController extends Controller
         }
         
         return view('admin.leaveRequests.record', compact('leaveRequests'));
+    }
+
+    public function storeCKEditorImages(Request $request)
+    {
+        abort_if(Gate::denies('leave_request_create') && Gate::denies('leave_request_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $model         = new LeaveRequest();
+        $model->id     = $request->input('crud_id', 0);
+        $model->exists = true;
+        $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
+
+        return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
 }

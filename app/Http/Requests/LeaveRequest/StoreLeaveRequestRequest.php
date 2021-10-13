@@ -40,7 +40,10 @@ class StoreLeaveRequestRequest extends FormRequest
             ],
             'status' => [
                 'nullable',
-            ]
+            ],
+            'attachments.*' => [
+                'required',
+            ],
         ];
     }
 }

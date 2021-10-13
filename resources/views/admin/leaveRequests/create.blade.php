@@ -10,7 +10,7 @@
         {{ trans('global.create') }} {{ trans('cruds.leaveRequest.title_singular') }}
     </div>
     <div class="card-body">
-        <form action="{{ route("admin.leaveRequests.store") }}" method="POST">
+        <form action="{{ route("admin.leaveRequests.store") }}" method="POST" autocomplete="off">
             @csrf
             @if(empty($employee))
             <div class="alert alert-danger" role="alert">
@@ -19,7 +19,7 @@
             @endif
             @if(!empty($employee))
             <div class="form-group">
-                <label for="employee_id" class="required">{{ trans('cruds.leaveRequest.fields.employee')}} <span class="text-danger">*</span></label>
+                <label for="employee_id">{{ trans('cruds.leaveRequest.fields.employee')}} <span class="text-danger">*</span></label>
                 <select class="form-control @error('employee_id') form-control-danger @enderror" name="employee_id" id="employee_id" required>
                     <option value="{{ $employee->id }}" selected>{{ $employee->first_name }} {{ $employee->last_name }}</option>
                 </select>
@@ -30,7 +30,7 @@
             @endif
                 
             <div class="form-group">
-                <label for="leave_type_id" class="required">{{ trans('cruds.leaveRequest.fields.leave_type')}} <span class="text-danger">*</span></label>
+                <label for="leave_type_id">{{ trans('cruds.leaveRequest.fields.leave_type')}} <span class="text-danger">*</span></label>
                 <select class="js-example-basic-single w-100 select2-hidden-accessible @error('leave_type_id') form-control-danger @enderror" name="leave_type_id" data-width="100%" aria-hidden="true">
                     <option value="">--- Choose leave type ---</option>
                     @foreach ($leaveTypes as $id => $leaveType)
@@ -43,7 +43,7 @@
             </div>
 
             {{-- <div class="form-group">
-                <label for="leave_type_id" class="required">{{ trans('cruds.leaveRequest.fields.leave_type')}} <span class="text-danger">*</span></label>
+                <label for="leave_type_id">{{ trans('cruds.leaveRequest.fields.leave_type')}} <span class="text-danger">*</span></label>
                 @foreach ($leaveTypes as $id => $leaveType)
                     <div class="form-check ml-2">
                         <label class="form-check-label">
@@ -58,23 +58,23 @@
             </div> --}}
 
             <div class="form-group">
-                <label for="commencement_date" class="required">{{ trans('cruds.leaveRequest.fields.commencement_date')}} <span class="text-danger">*</span></label>
-                <input class="form-control date @error('commencement_date') form-control-danger @enderror" type="text" name="commencement_date" id="commencement_date" value="{{ old('commencement_date', '') }}" required>
+                <label for="commencement_date">{{ trans('cruds.leaveRequest.fields.commencement_date')}} <span class="text-danger">*</span></label>
+                <input class="form-control datepicker @error('commencement_date') form-control-danger @enderror" type="text" name="commencement_date" id="commencement_date" value="{{ old('commencement_date', '') }}" required>
                 @error('commencement_date')
                 <span class="error mt-2 text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
             <div class="form-group">
-                <label for="resumption_date" class="required">{{ trans('cruds.leaveRequest.fields.resumption_date')}} <span class="text-danger">*</span></label>
-                <input class="form-control date @error('resumption_date') form-control-danger @enderror" type="text" name="resumption_date" id="resumption_date" value="{{ old('resumption_date', '') }}" required>
+                <label for="resumption_date">{{ trans('cruds.leaveRequest.fields.resumption_date')}} <span class="text-danger">*</span></label>
+                <input class="form-control datepicker @error('resumption_date') form-control-danger @enderror" type="text" name="resumption_date" id="resumption_date" value="{{ old('resumption_date', '') }}" required>
                 @error('resumption_date')
                 <span class="error mt-2 text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
             <div class="form-group">
-                <label for="no_of_day" class="required">{{ trans('cruds.leaveRequest.fields.no_of_day')}} <span class="text-danger">*</span></label>
+                <label for="no_of_day">{{ trans('cruds.leaveRequest.fields.no_of_day')}} <span class="text-danger">*</span></label>
                 <input class="form-control @error('no_of_day') form-control-danger @enderror" type="number" min="0" name="no_of_day" id="no_of_day" value="{{ old('no_of_day', '') }}" required>
                 @error('no_of_day')
                 <span class="error mt-2 text-danger">{{ $message }}</span>
@@ -82,16 +82,25 @@
             </div>
 
             <div class="form-group">
-                <label for="reason" class="required">{{ trans('cruds.leaveRequest.fields.reason')}} <span class="text-danger">*</span> </label>
-                <textarea class="form-control @error('reason') form-control-danger @enderror" type="text" name="reason" id="reason" rows="5" value="{{ old('reason', '') }}" required>
-                </textarea>
+                <label for="reason">{{ trans('cruds.leaveRequest.fields.reason')}} <span class="text-danger">*</span> </label>
+                <textarea class="form-control @error('reason') form-control-danger @enderror" type="text" name="reason" id="reason" rows="5" required></textarea>
                 @error('reason')
                 <span class="error mt-2 text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
             <div class="form-group">
-                <button class="btn btn-danger" type="submit">
+                <label for="attachments">{{ trans('cruds.leaveRequest.fields.attachments') }} <span class="text-danger">*</span></label>
+                <div class="needsclick dropzone @error('attachments') is-invalid @enderror" id="attachments-dropzone">
+                </div>
+                @error('attachments')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+                <span class="help-block">{{ trans('cruds.leaveRequest.fields.attachments_helper') }}</span>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-danger" @if(empty($employee)) disabled @endif type="submit">
                     Request
                 </button>
             </div>
@@ -102,4 +111,84 @@
 @section('scripts')
 @parent
 {!! JsValidator::formRequest('App\Http\Requests\LeaveRequest\StoreLeaveRequestRequest') !!}
+<script type="text/javascript">
+    var uploadedAttachmentsMap = {}
+
+    Dropzone.options.attachmentsDropzone = {
+        url: '{{ route('admin.leaveRequests.storeMedia') }}',
+        maxFilesize: 10, // MB
+        addRemoveLinks: true,
+        headers: {
+            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        params: {
+            size: 10
+        },
+        success: function (file, response) {
+            $('form').append('<input type="hidden" name="attachments[]" value="' + response.name + '">')
+            uploadedAttachmentsMap[file.name] = response.name
+        },
+        removedfile: function (file) {
+            file.previewElement.remove()
+            var name = ''
+            if (typeof file.file_name !== 'undefined') {
+                name = file.file_name
+            } else {
+                name = uploadedAttachmentsMap[file.name]
+            }
+            $('form').find('input[name="attachments[]"][value="' + name + '"]').remove()
+        },
+        init: function () {
+            @if(isset($leaveRequest) && $leaveRequest->attachments)
+                    var files =
+                        {!! json_encode($leaveRequest->attachments) !!}
+                        for (var i in files) {
+                        var file = files[i]
+                        this.options.addedfile.call(this, file)
+                        file.previewElement.classList.add('dz-complete')
+                        $('form').append('<input type="hidden" name="attachments[]" value="' + file.file_name + '">')
+                        }
+            @endif
+        },
+        error: function (file, response) {
+            if ($.type(response) === 'string') {
+                var message = response //dropzone sends it's own error messages in string
+            } else {
+                var message = response.errors.file
+            }
+            file.previewElement.classList.add('dz-error')
+            _ref = file.previewElement.querySelectorAll('[data-dz-errormessage]')
+            _results = []
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                node = _ref[_i]
+                _results.push(node.textContent = message)
+            }
+
+            return _results
+        }
+    }
+</script>
+<script>
+    $(function() {
+        $('#commencement_date').datepicker({
+            format: "dd-mm-yyyy",
+            todayHighlight:'TRUE',
+            autoclose: true,
+            minDate: 0,
+            maxDate: '+1Y+6M'
+        }).on('changeDate', function (ev) {
+            $('#resumption_date').datepicker('setStartDate', $("#commencement_date").val());
+        });
+
+        $('#resumption_date').datepicker({
+            format: "dd-mm-yyyy",
+            todayHighlight:'TRUE',
+            autoclose: true,
+            minDate: '0',
+            maxDate: '+1Y+6M'
+        })
+
+    });
+</script>
+
 @endsection

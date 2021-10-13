@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
 use Gate;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\User;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreUserRequest extends FormRequest
 {
@@ -23,7 +24,11 @@ class StoreUserRequest extends FormRequest
             ],
             'email' => [
                 'required',
-                'unique:users',
+                Rule::unique('users')
+                ->ignore($this->user)
+                ->where(function($query) {
+                    $query->where('deleted_at', null);
+                })
             ],
             'password' => [
                 'required',

@@ -299,6 +299,8 @@ return [
             'resumption_date_helper'       => ' ',
             'reason'              => 'Reason',
             'reason_helper'       => ' ',
+            'attachments'              => 'Attachments',
+            'attachments_helper'       => ' ',
             'status'              => 'Status',
             'status_helper'       => ' ',
             'created_at'        => 'Created at',

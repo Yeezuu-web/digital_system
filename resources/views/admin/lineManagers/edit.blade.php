@@ -61,5 +61,5 @@
 
 @section('scripts')
 @parent
-{!! JsValidator::formRequest('App\Http\Requests\lineManager\UpdatelineManagerRequest') !!}
+{!! JsValidator::formRequest('App\Http\Requests\LineManager\UpdateLineManagerRequest') !!}
 @endsection
