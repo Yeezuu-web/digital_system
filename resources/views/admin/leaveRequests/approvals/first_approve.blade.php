@@ -129,8 +129,8 @@
 
         $.ajax({
             type: "POST",
-            url: "/system/admin/leaveRequests/firstApprove/update/" + id, // on production
-            // url: "/admin/leaveRequests/firstApprove/update/" + id, // on development
+            // url: "/system/admin/leaveRequests/firstApprove/update/" + id, // on production
+            url: "/admin/leaveRequests/firstApprove/update/" + id, // on development
             data: {
                 _token: _token,
                 action: action,
@@ -178,8 +178,8 @@
 
         $.ajax({
             type: "POST",
-            url: "/system/admin/leaveRequests/firstApprove/update/" + id, // on production
-            // url: "/admin/leaveRequests/firstApprove/update/" + id, // on development
+            // url: "/system/admin/leaveRequests/firstApprove/update/" + id, // on production
+            url: "/admin/leaveRequests/firstApprove/update/" + id, // on development
             data: {
                 _token: _token,
                 action: action,

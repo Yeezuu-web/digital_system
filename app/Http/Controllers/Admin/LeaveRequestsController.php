@@ -160,37 +160,30 @@ class LeaveRequestsController extends Controller
                 $firstlineManager = Employee::with('lineManager')->where('id', $headDepartment->parent->lineManager->employee_id)->first();
             }
 
-            try {
-                $headDepartmentLineManager =  Department::with(['parent'])->where('id', $firstlineManager->department->id)->first();
+            $headDepartmentLineManager =  Department::with(['parent'])->where('id', $firstlineManager->department->id)->first();
+            
+            $parentDep = $headDepartmentLineManager->parent;
+
+            if(!empty($parentDep))
+            {
+                $parentDep->load(['lineManager']);
+
+                $parentDepLineManager = $parentDep->lineManager;
+
+                $parentDepLineManager->load(['employee']);
+
+                $employeeAssecondLineManager = $parentDepLineManager->employee;
+
+                $employeeAssecondLineManager->load(['user']);
                 
-                $parentDep = $headDepartmentLineManager->parent;
+                $email = $employeeAssecondLineManager->user->email;
+            }else{
+                // The after last Employee (COO to CEO) spacial condition
+                $now = now();
+                $leaveRequest->update(['status' => '2', 'approved_at' => $now]);
 
-                if(!empty($parentDep))
-                {
-                    $parentDep->load(['lineManager']);
-    
-                    $parentDepLineManager = $parentDep->lineManager;
-    
-                    $parentDepLineManager->load(['employee']);
-    
-                    $employeeAssecondLineManager = $parentDepLineManager->employee;
-    
-                    $employeeAssecondLineManager->load(['user']);
-                    
-                    $email = $employeeAssecondLineManager->user->email;
-                }else{
-                    // The after last Employee (COO to CEO) spacial condition
-                    $now = now();
-                    $leaveRequest->update(['status' => '2', 'approved_at' => $now]);
+                $leaveRequest->user()->associate($request->reviewedBy)->save();
 
-                    $leaveRequest->user()->associate($request->reviewedBy)->save();
-
-                }
-                
-            }catch(Throwable $e){
-                report($e);
-
-                return false;
             }
             
             $now = now();
