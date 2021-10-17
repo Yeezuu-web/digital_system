@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Gate;
+use Throwable;
 use App\Models\Employee;
 use App\Models\LeaveType;
 use App\Models\Department;
@@ -186,8 +187,10 @@ class LeaveRequestsController extends Controller
 
                 }
                 
-            }catch(e){
-                return e;
+            }catch(Throwable $e){
+                report($e);
+
+                return false;
             }
             
             $now = now();
