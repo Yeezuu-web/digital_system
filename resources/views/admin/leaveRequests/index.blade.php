@@ -39,6 +39,9 @@
                             {{ trans('cruds.leaveRequest.fields.no_of_day') }}
                         </th>
                         <th>
+                            {{ trans('cruds.leaveRequest.fields.cover_by') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.leaveRequest.fields.reason') }}
                         </th>
                         <th>
@@ -72,6 +75,9 @@
                             </td>
                             <td>
                                 {{ $leaveRequest->no_of_day ?? '' }}
+                            </td>
+                            <td>
+                                {{ $leaveRequest->coverBy->first_name ?? 'Don\'t have' }} {{ $leaveRequest->coverBy->last_name ?? '' }}
                             </td>
                             <td>
                                 {{ $leaveRequest->reason ?? '' }}

@@ -27,7 +27,7 @@ class LeaveRequest extends Model implements HasMedia
     ];
 
     protected $fillable = [
-        'commencement_date', 'resumption_date', 'no_of_day', 'reason', 'employee_id', 'leave_type_id', 'status', 'reviewed_at', 'approved_at', 'user_id'
+        'commencement_date', 'resumption_date', 'no_of_day', 'reason', 'employee_id', 'leave_type_id', 'status', 'reviewed_at', 'approved_at', 'user_id', 'cover_by'
     ];
 
     protected $dates = [
@@ -54,7 +54,7 @@ class LeaveRequest extends Model implements HasMedia
 
     public function setCommencementDateAttribute($value)
     {
-        $this->attributes['commencecommencement_datement_dare'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+        $this->attributes['commencement_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
     public function getResumptionDateAttribute($value)
@@ -80,6 +80,11 @@ class LeaveRequest extends Model implements HasMedia
     public function employee()
     {
         return $this->beLongsTo(Employee::class);
+    }
+
+    public function coverBy()
+    {
+        return $this->beLongsTo(Employee::class, 'cover_by');
     }
 
     public function leaveType()

@@ -55,9 +55,13 @@
                             <td>{{ $leaveRequest->no_of_day ?? '' }} day(s)</td>
                         </tr>
                         <tr>
+                            <td width="30">Cuurent Work Cover By</td>
+                            <td>{{ $leaveRequest->coverBy->first_name ?? 'Don\'t have' }} {{ $leaveRequest->coverBy->last_name ?? '' }}</td>
+                        </tr>
+                        <tr>
                             <td width="30">Attachments</td>
                             <td>
-                                @if (!empty($leaveRequest->attachments))
+                                @if ($leaveRequest->attachments->IsNotEmpty())
                                     @foreach ($leaveRequest->attachments as $media)    
                                         <a class="btn btn-info btn-sm" href="{{ $media->getUrl() }}" target="_blank">
                                                 <i class="link-icon mr-2" style="width: 18px; heieght: 18px" data-feather="download"></i>
@@ -65,7 +69,7 @@
                                         </a>
                                     @endforeach
                                 @else
-                                    no attachments...
+                                    No Attachments..
                                 @endif
                             </td>
                         </tr>

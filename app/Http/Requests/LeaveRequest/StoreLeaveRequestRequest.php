@@ -35,6 +35,9 @@ class StoreLeaveRequestRequest extends FormRequest
             'employee_id' => [
                 'required'
             ],
+            'cover_by' => [
+                'integer'
+            ],
             'leave_type_id' => [
                 'required'
             ],

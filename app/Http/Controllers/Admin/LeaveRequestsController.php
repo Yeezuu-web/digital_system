@@ -34,9 +34,11 @@ class LeaveRequestsController extends Controller
         
         $employee = Employee::where('user_id', $id)->first();
 
+        $employees = Employee::where('id', '!=', $id)->get();
+
         $leaveTypes = LeaveType::pluck('title', 'id');
 
-        return view('admin.leaveRequests.create', compact('employee', 'leaveTypes'));
+        return view('admin.leaveRequests.create', compact('employee', 'leaveTypes', 'employees'));
     }
 
     public function store(StoreLeaveRequestRequest $request)

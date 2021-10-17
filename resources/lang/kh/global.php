@@ -304,5 +304,17 @@ return [
     'team-members'                   => 'Team members',
     'calendar'                       => 'Calendar',
     'messenger'                      => 'Messenger',
-    'welcom_dashboard'              => 'ស្វាគមន៏មកកាន់ផ្ទាំងគ្រប់គ្រង'
+    'welcom_dashboard'              => 'ស្វាគមន៏មកកាន់ផ្ទាំងគ្រប់គ្រង',
+    'department'                    => 'ផ្នែក',
+    'channel'                       => 'Channel',
+    'production'                    => 'Production',
+    'boost'                         => 'Boost',
+    'report_boost'                  => 'Boost Report',
+    'position'                      => 'ទួនាទី',
+    'employee'                      => 'វិនិយោគជិក',
+    'lineManager'                   => 'អ្នកគ្រប់គ្រង',
+    'holiday'                       => 'ថ្ងៃឈប់សម្រាក',
+    'leave_type'                    => 'ប្រភេទច្បាប់',
+    'leave_request'                 => 'ស្នើរសុំច្បាប់',
+    'report_leave'                  => 'របាយការណ៍សុំច្បាប់',
 ];

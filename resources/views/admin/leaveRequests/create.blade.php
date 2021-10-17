@@ -100,6 +100,19 @@
             </div>
 
             <div class="form-group">
+                <label for="cover_by">{{ trans('cruds.leaveRequest.fields.cover_by')}} <span class="text-danger">*</span></label>
+                <select class="js-example-basic-single w-100 select2-hidden-accessible @error('cover_by') form-control-danger @enderror" name="cover_by" data-width="100%" aria-hidden="true">
+                    <option value="">--- Choose Cover By ---</option>
+                    @foreach ($employees as $employee)
+                        <option value="{{ $employee->id }}">{{ $employee->first_name }} {{ $employee->last_name }}</option>
+                    @endforeach
+                </select>
+                @error('cover_by')
+                    <label class="error mt-2 text-danger">{{ $message }}</label>
+                @enderror
+            </div>
+
+            <div class="form-group">
                 <button class="btn btn-danger" @if(empty($employee)) disabled @endif type="submit">
                     Request
                 </button>
