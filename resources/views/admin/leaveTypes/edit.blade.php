@@ -44,5 +44,5 @@
 
 @section('scripts')
 @parent
-{!! JsValidator::formRequest('App\Http\Requests\leaveType\UpdateleaveTypeRequest') !!}
+{!! JsValidator::formRequest('App\Http\Requests\LeaveType\UpdateLeaveTypeRequest') !!}
 @endsection
