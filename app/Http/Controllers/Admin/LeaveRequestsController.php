@@ -189,8 +189,6 @@ class LeaveRequestsController extends Controller
             }catch(e){
                 return e;
             }
-
-            dd($email);
             
             $now = now();
             $leaveRequest->update(['status' => '1', 'reviewed_at' => $now]);
