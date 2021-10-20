@@ -264,6 +264,7 @@ return [
     ],
     'leaveRequest' => [
         'title'             => 'ស្នើរ សុំច្បាប់',
+        'menu'              => 'បញ្ជីស្នើ',
         'title_singular'    => 'ស្នើរ សុំច្បាប់',
         'fields'            => [
             'id'                => 'ID',
@@ -281,6 +282,7 @@ return [
             'reason'              => 'មួលហេតុ',
             'reason_helper'       => ' ',
             'cover_by'              => 'អ្នកជំនួស',
+            'cover_by_long'         => 'រាល់ទំនួលខុសត្រូវ នឹងភារក្សកិច្ចខ្ញុំទាំងអស់ត្រូវជំនួសដោយ',
             'cover_by_helper'       => ' ',
             'attachments'              => 'ឯកសារយោង',
             'attachments_helper'       => ' ',

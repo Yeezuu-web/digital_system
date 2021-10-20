@@ -317,6 +317,9 @@ return [
     'lineManager'                   => 'Line Manger',
     'holiday'                       => 'Holiday',
     'leave_type'                    => 'Leave Type',
+    'leave_record'                  => 'Your Leave Record',
     'leave_request'                 => 'Leave Request',
+    'create_leave'                  => 'Form Leave Request',
+    'form'                          => 'Form',
     'report_leave'                  => 'Reeport Leave',
 ];

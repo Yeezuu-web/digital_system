@@ -7,7 +7,7 @@
 </div>
 <div class="card">
     <div class="card-header">
-        {{ trans('global.create') }} {{ trans('cruds.leaveRequest.title_singular') }}
+        {{ trans('global.form') }} {{ trans('cruds.leaveRequest.title_singular') }}
     </div>
     <div class="card-body">
         <form action="{{ route("admin.leaveRequests.store") }}" method="POST" autocomplete="off">
@@ -31,7 +31,7 @@
                 
             <div class="form-group">
                 <label for="leave_type_id">{{ trans('cruds.leaveRequest.fields.leave_type')}} <span class="text-danger">*</span></label>
-                <select class="js-example-basic-single w-100 select2-hidden-accessible @error('leave_type_id') form-control-danger @enderror" name="leave_type_id" data-width="100%" aria-hidden="true">
+                <select class="js-example-basic-single w-100 select2-hidden-accessible @error('leave_type_id') form-control-danger @enderror" name="leave_type_id" id="leave_type_id" data-width="100%" aria-hidden="true">
                     <option value="">--- Choose leave type ---</option>
                     @foreach ($leaveTypes as $id => $leaveType)
                         <option value="{{ $id }}">{{ $leaveType }}</option>
@@ -82,7 +82,7 @@
             </div>
 
             <div class="form-group">
-                <label for="reason">{{ trans('cruds.leaveRequest.fields.reason')}} <span class="text-danger">*</span> </label>
+                <label for="reason">{{ trans('cruds.leaveRequest.fields.reason')}}</label>
                 <textarea class="form-control @error('reason') form-control-danger @enderror" type="text" name="reason" id="reason" rows="5" required></textarea>
                 @error('reason')
                 <span class="error mt-2 text-danger">{{ $message }}</span>
@@ -90,17 +90,7 @@
             </div>
 
             <div class="form-group">
-                <label for="attachments">{{ trans('cruds.leaveRequest.fields.attachments') }} </label>
-                <div class="needsclick dropzone @error('attachments') is-invalid @enderror" id="attachments-dropzone">
-                </div>
-                @error('attachments')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-                <span class="help-block">{{ trans('cruds.leaveRequest.fields.attachments_helper') }}</span>
-            </div>
-
-            <div class="form-group">
-                <label for="cover_by">{{ trans('cruds.leaveRequest.fields.cover_by')}} <span class="text-danger">*</span></label>
+                <label for="cover_by">{{ trans('cruds.leaveRequest.fields.cover_by_long')}} <span class="text-danger">(Optional)</span></label>
                 <select class="js-example-basic-single w-100 select2-hidden-accessible @error('cover_by') form-control-danger @enderror" name="cover_by" data-width="100%" aria-hidden="true">
                     <option value="">--- Choose Cover By ---</option>
                     @foreach ($employees as $employee)
@@ -110,6 +100,16 @@
                 @error('cover_by')
                     <label class="error mt-2 text-danger">{{ $message }}</label>
                 @enderror
+            </div>
+
+            <div class="form-group" id="upload-attach">
+                <label for="attachments">{{ trans('cruds.leaveRequest.fields.attachments') }}</label>
+                <div class="needsclick dropzone @error('attachments') is-invalid @enderror" id="attachments-dropzone">
+                </div>
+                @error('attachments')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+                <span class="help-block">{{ trans('cruds.leaveRequest.fields.attachments_helper') }}</span>
             </div>
 
             <div class="form-group">
@@ -202,6 +202,19 @@
         })
 
     });
+</script>
+<script>
+    $(function() {
+        $('#upload-attach').hide();
+        $('#leave_type_id').change(function() {
+            let val = $(this).val();
+            if(val === '3' || val === '2'){
+                $('#upload-attach').show();
+            }else{
+                $('#upload-attach').hide();
+            }
+        })
+    })
 </script>
 
 @endsection

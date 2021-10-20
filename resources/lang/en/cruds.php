@@ -283,6 +283,7 @@ return [
     ],
     'leaveRequest' => [
         'title'             => 'Leave Requests',
+        'menu'              => 'Pending Requests',
         'title_singular'    => 'Leave Request',
         'fields'            => [
             'id'                => 'ID',
@@ -299,6 +300,7 @@ return [
             'resumption_date_helper'       => ' ',
             'reason'              => 'Reason',
             'reason_helper'       => ' ',
+            'cover_by_long'         => 'My regular dutires and responsibilties will be covered by',
             'cover_by'              => 'Cover By',
             'cover_by_helper'       => ' ',
             'attachments'              => 'Attachments',

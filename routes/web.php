@@ -114,6 +114,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::post('leaveRequests/firstApprove/update/{leaveRequest}', [LeaveRequestsController::class , 'firstApproveUpdate'])->name('leaveRequests.firstApproveUpdate');
     Route::get('leaveRequests/{leaveRequest}/secondApprove', [LeaveRequestsController::class , 'secondApprove'])->name('leaveRequests.secondApprove');
     Route::post('leaveRequests/secondApprove/update/{leaveRequest}', [LeaveRequestsController::class , 'secondApproveUpdate'])->name('leaveRequests.secondApproveUpdate');
+    Route::post('leaveRequests/approve', [LeaveRequestsController::class , 'approve'])->name('leaveRequests.approve');
     Route::get('leaveRequests/record', [LeaveRequestsController::class , 'record'])->name('leaveRequests.record');
     Route::post('leaveRequests/media', [LeaveRequestsController::class, 'storeMedia'])->name('leaveRequests.storeMedia');
     Route::post('leaveRequests/ckmedia', [LeaveRequestsController::class, 'storeCKEditorImages'])->name('leaveRequests.storeCKEditorImages');

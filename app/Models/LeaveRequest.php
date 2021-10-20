@@ -3,15 +3,16 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\User;
 use DateTimeInterface;
 use App\Models\Employee;
-use App\Models\User;
 use App\Models\LeaveType;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Znck\Eloquent\Traits\BelongsToThrough;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class LeaveRequest extends Model implements HasMedia
@@ -19,6 +20,7 @@ class LeaveRequest extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
     use SoftDeletes;
+    use BelongsToThrough;
 
     protected $table = "leave_requests";
 
@@ -85,5 +87,10 @@ class LeaveRequest extends Model implements HasMedia
     public function user()
     {
         return $this->beLongsTo(User::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsToThrough(Department::class, [Position::class, Employee::class])->withTrashed('employees.deleted_at');
     }
 }

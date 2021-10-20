@@ -19,7 +19,7 @@
                 </a>
             </li>
             @can('hr_admin')
-                <li class="nav-item nav-category">Applications</li>
+                <li class="nav-item nav-category">HR System</li>
                 @can('department_access') 
                     <li class="nav-item {{ request()->is("admin/departments") || request()->is("admin/departments/*") ? "active" : "" }}">
                         <a href="{{ route("admin.departments.index") }}" class="nav-link">
@@ -72,7 +72,7 @@
                     <li class="nav-item {{ request()->is("admin/leaveRequests") || request()->is("admin/leaveRequests/show") || request()->is("admin/leaveRequests/edit") ? "active" : "" }}">
                         <a href="{{ route("admin.leaveRequests.index") }}" class="nav-link">
                             <i class="link-icon" data-feather="bookmark"></i>
-                            <span class="link-title">{{ trans('global.leave_request') }}</span>
+                            <span class="link-title">{{ trans('cruds.leaveRequest.menu') }}</span>
                         </a>
                     </li>
                 @endcan
@@ -80,7 +80,7 @@
                     <li class="nav-item {{ request()->is("admin/leaveRequests/record") || request()->is("admin/leaveRequests/record") ? "active" : "" }}">
                         <a href="{{ route("admin.leaveRequests.record") }}" class="nav-link">
                             <i class="link-icon" data-feather="archive"></i>
-                            <span class="link-title">Leave Record</span>
+                            <span class="link-title">{{ trans('global.leave_record') }}</span>
                         </a>
                     </li>
                 @endcan
@@ -88,15 +88,15 @@
                     <li class="nav-item {{ request()->is("admin/leaveRequests/create") || request()->is("admin/leaveRequests/create") ? "active" : "" }}">
                         <a href="{{ route("admin.leaveRequests.create") }}" class="nav-link">
                             <i class="link-icon" data-feather="send"></i>
-                            <span class="link-title">Create Leave Request</span>
+                            <span class="link-title">{{ trans('global.create_leave') }}</span>
                         </a>
                     </li>
-                @endcan
-                @can('leaveRequest_approver') 
+                    @endcan
+                    @can('leaveRequest_approver') 
                     <li class="nav-item {{ request()->is("admin/hr/report") ? "active" : "" }}">
                         <a href="{{ route("admin.hr.report") }}" class="nav-link">
                             <i class="link-icon" data-feather="file-text"></i>
-                            <span class="link-title">Leave Report</span>
+                            <span class="link-title">{{ trans('global.report_leave') }}</span>
                         </a>
                     </li>
                 @endcan

@@ -58,4 +58,9 @@ class Department extends Model
     {
         return $this->hasOne(LineManager::class);
     }
+
+    public function leaveRequests()
+    {
+        return $this->hasManyThrough(LeaveRequest::class, [Employee::class, Position::class]);
+    }
 }

@@ -21,10 +21,29 @@ class LeaveRequestsController extends Controller
     public function index()
     {
         abort_if(Gate::denies('leave_request_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
+        $currentUser = auth()->user()->load(['employee']);
 
-        $leaveRequests = LeaveRequest::with(['employee', 'leaveType'])->get();
+        $employee = $currentUser->employee;
+        
+        $department = $employee->department;
 
-        return view('admin.leaveRequests.index', compact('leaveRequests'));
+        $children = $department->load(['children']);
+
+        $leaveRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
+            ->whereHas('department', function ($q) use ($department){
+                $q->where('positions.department_id', $department->id);
+            })
+            ->get();
+
+        $leaveChildRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
+            ->whereHas('department', function ($q) use ($children){
+                $q->where('positions.department_id', $children->children->id);
+            })
+            ->get();
+        
+
+        return view('admin.leaveRequests.index', compact('leaveRequests', 'leaveChildRequests'));
     }
 
     public function create()
@@ -35,7 +54,7 @@ class LeaveRequestsController extends Controller
         
         $employee = Employee::where('user_id', $id)->first();
 
-        $employees = Employee::where('id', '!=', $id)->get();
+        $employees = Employee::where('user_id', '!=', $id)->get();
 
         $leaveTypes = LeaveType::pluck('title', 'id');
 
@@ -131,11 +150,80 @@ class LeaveRequestsController extends Controller
     {
         abort_if(Gate::denies('leaveRequest_reviewer'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $employee = Employee::findOrfail($leaveRequest->employee_id);
+        // find requester
+        // Check who request this leave
+        $leaveRequest->load(['leaveType'], ['employee']);
 
-        $leaveRequest->load(['leaveType']);
+        $employee = $leaveRequest->employee;
+        
+        $getDepartment = $employee->department;
+        
+        // Load LineManager of the requester
+        $loadlineManager = $employee->load(['lineManager']);
+        
+        $lineManager = $loadlineManager->lineManager;
 
-        return view('admin.leaveRequests.approvals.first_approve', compact('leaveRequest', 'employee'));
+        // find Current loggin
+        // Check who can approve
+        $currentUser = auth()->user()->load(['employee']);
+
+        $currentEmp = $currentUser->employee;
+
+        $dept = '';
+
+        if($currentEmp->empId != $employee->empId){
+            // If this request is from Line manager
+            if(!empty($lineManager))
+            {
+                $loadDept = $lineManager->load(['department']);
+
+                $lineManagerDept = $loadDept->department->load('parent');
+
+                $parent = $lineManagerDept->parent;
+
+                $dept = $parent->title;
+                
+                if(!empty($parent->parent)){
+                    if($parent->parent->title != $currentEmp->department->title){
+                        // Change employee to upper level
+                        // @from requester employee
+                        $checkDept = $employee->department;
+            
+                        $upperDept =  $checkDept->load(['parent']);
+            
+                        $getDepartment = $upperDept->parent;
+                    }
+                }else{
+                    // Change employee to upper level
+                    // @from requester employee
+                    $checkDept = $employee->department;
+        
+                    $upperDept =  $checkDept->load(['parent']);
+        
+                    $getDepartment = $upperDept->parent;
+                }
+            }else {
+                // If this request from employee
+                $loadLineManager = $currentEmp->load(['lineManager']);
+
+                if(!empty($loadLineManager->lineManager))
+                {
+                    $lineManager = $loadLineManager->lineManager;
+
+                    $loadDept = $lineManager->load(['department']);
+
+                    $dept = $loadDept->department->title;
+                } else {
+                    $dept = '';
+                }
+            }
+        }
+        // Got department title
+        $title = $getDepartment->title;
+        
+        $roles = $currentUser->roles->toArray();
+
+        return view('admin.leaveRequests.approvals.first_approve', compact('leaveRequest', 'employee', 'title', 'dept', 'roles'));
     }
 
     public function firstApproveUpdate(Request $request, $id)
@@ -160,30 +248,40 @@ class LeaveRequestsController extends Controller
                 $firstlineManager = Employee::with('lineManager')->where('id', $headDepartment->parent->lineManager->employee_id)->first();
             }
 
-            $headDepartmentLineManager =  Department::with(['parent'])->where('id', $firstlineManager->department->id)->first();
-            
-            $parentDep = $headDepartmentLineManager->parent;
-
-            if(!empty($parentDep))
-            {
-                $parentDep->load(['lineManager']);
-
-                $parentDepLineManager = $parentDep->lineManager;
-
-                $parentDepLineManager->load(['employee']);
-
-                $employeeAssecondLineManager = $parentDepLineManager->employee;
-
-                $employeeAssecondLineManager->load(['user']);
+            try {
+                $headDepartmentLineManager =  Department::with(['parent'])->where('id', $firstlineManager->department->id)->first();
                 
-                $email = $employeeAssecondLineManager->user->email;
-            }else{
-                // The after last Employee (COO to CEO) spacial condition
-                $now = now();
-                $leaveRequest->update(['status' => '2', 'approved_at' => $now]);
+                $parentDep = $headDepartmentLineManager->parent; // load parent department
 
-                $leaveRequest->user()->associate($request->reviewedBy)->save();
+                if(!empty($parentDep)) // checl condition if departemnt have parent
+                {
+                    $parentDep->load(['lineManager']);
+    
+                    $parentDepLineManager = $parentDep->lineManager;
+    
+                    $parentDepLineManager->load(['employee']);
+    
+                    $employeeAssecondLineManager = $parentDepLineManager->employee;
+    
+                    $employeeAssecondLineManager->load(['user']);
+                    
+                    $email = $employeeAssecondLineManager->user->email;
+                    
+                }else{
+                    // if department doesn't have parent auto first approve
+                    // The after last Employee (COO to CEO) spacial condition
+                    $now = now();
+                    $leaveRequest->update(['status' => '2', 'approved_at' => $now]);
 
+                    $leaveRequest->user()->associate($request->reviewedBy)->save();
+
+                }
+
+                
+            }catch(Throwable $e){
+                report($e);
+
+                return false;
             }
             
             $now = now();
@@ -222,36 +320,100 @@ class LeaveRequestsController extends Controller
     {
         abort_if(Gate::denies('leaveRequest_approver'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $leaveRequest->load(['user']);
+        // Who is requester
+        $leaveRequest->load(['leaveType'], ['employee']);
 
-        $employee = Employee::findOrfail($leaveRequest->employee_id);
+        $employee = $leaveRequest->employee;
 
-        return view('admin.leaveRequests.approvals.second_approve', compact('leaveRequest', 'employee'));
+        $title = $employee->department->title;
+
+        // Who is loggin
+        $currentUser = auth()->user();
+
+        $loadEmp = $currentUser->load(['employee']);
+
+        $employeeLog = $loadEmp->employee;
+
+        // Load line manager
+        $loadLineManager = $employee->load(['lineManager']);
+        $loadLineManagerLog = $employeeLog->load(['lineManager']);
+
+        if(empty($loadLineManager->lineManager))
+        {
+            // Is request from employee
+            $lineManager = $loadLineManagerLog->lineManager;
+            
+            if(!empty($lineManager)){
+                $loadDept = $lineManager->load(['department']);
+    
+                $dept = $loadDept->department;
+    
+                $loadChild = $dept->load(['children']);
+    
+                if(!empty($loadChild->children))
+                {
+                    $children = $loadChild->children->title;
+                } else {
+                    $children = '';
+                }
+            } else {
+                $children = '';
+            }
+
+        }else{
+            // Is request from line manager
+            $lineManager = $loadLineManagerLog->lineManager;
+            
+            $loadDept = $lineManager->load(['department']);
+
+            $dept = $loadDept->department;
+
+            $loadChild = $dept->load(['children']);
+
+            if(!empty($loadChild->children))
+            {
+                $children = $loadChild->children->title;
+            } else {
+                $children = '';
+            }
+
+            $currentDept = $employee->department;
+
+            $loadParentDept = $currentDept->load(['parent']);
+
+            $parentDep = $loadParentDept->parent;
+
+            $title = $parentDep->title;
+        }
+
+        $roles = $currentUser->roles->toArray();
+
+        return view('admin.leaveRequests.approvals.second_approve', compact('leaveRequest', 'employee', 'title', 'children', 'roles'));
     }
 
     public function secondApproveUpdate(Request $request, $id)
     {
         abort_if(Gate::denies('leaveRequest_approver'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $leaveRequest = leaveRequest::findOrfail($id);
+        $leaveRequest = leaveRequest::with(['employee'])->where('id', $id)->first();
 
         if ($request->action == 'approve') {
             $now = now();
             
-            $employee = Employee::findOrfail($leaveRequest->employee_id);
-            
-            $newEligible = $employee->eligible_leave - $leaveRequest->no_of_day;
-            
-            if($employee->eligible_leave > 0 && $newEligible > 0){
-                
-                $employee->update(['eligible_leave' => $newEligible]);
-                
-            }elseif($employee->eligible = 0 || $newEligible <= 0){
-                
-                $employee->update(['eligible_leave' => 0, 'leave_taken' => abs($newEligible)]);
-                
+            $employee = $leaveRequest->employee;
+
+            if($leaveRequest->leave_type_id === '1'){
+                $newEligible = $employee->eligible_leave - $leaveRequest->no_of_day;
+
+                if($employee->eligible_leave > 0 && $newEligible > 0){
+                    $employee->update(['eligible_leave' => $newEligible]);
+
+                }elseif($employee->eligible = 0 || $newEligible <= 0){
+                    $employee->update(['eligible_leave' => 0, 'leave_taken' => abs($newEligible)]);
+
+                }
             }
-            
+
             $leaveRequest->update(['status' => '2', 'approved_at' => $now]);
 
         }elseif($request->action == 'reject'){
@@ -294,5 +456,29 @@ class LeaveRequestsController extends Controller
         $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+    }
+
+    public function approve(Request $request){
+        
+        $leaveRequest = LeaveRequest::findOrfail($request->id);
+
+        if($request->action == 'approve' && $request->type == 'first')
+        {
+            $leaveRequest->update(['status' => '1']);
+        }
+        elseif ($request->action == 'reject' && $request->type == 'second')
+        {
+            $leaveRequest->update(['status' => '2']);
+        } 
+        elseif ($request->action == 'reject')
+        {
+            $leaveRequest->update(['status' => '3']);
+        }
+        else 
+        {
+            return response('Opss', 402);
+        }
+
+        return response('success', 200);
     }
 }
