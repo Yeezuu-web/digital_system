@@ -7,7 +7,126 @@
 
 <div class="card mt-3">
     <div class="card-body">
-        <h6 class="card-title">First Apprvoe List</h6>
+        <h6 class="card-title">First Approve List</h6>
+        <div class="table-responsive">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-LeaveRequest">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.leaveRequest.fields.id') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.leaveRequest.fields.employee') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.leaveRequest.fields.leave_type') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.leaveRequest.fields.commencement_date') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.leaveRequest.fields.resumption_date') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.leaveRequest.fields.no_of_day') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.leaveRequest.fields.cover_by') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.leaveRequest.fields.reason') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.leaveRequest.fields.status') }}
+                        </th>
+                        <th>
+                            Approval
+                        </th>
+                        <th>
+                            &nbsp;
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($leaveRequests as $key => $leaveRequest)
+                        <tr data-entry-id="{{ $leaveRequest->id }}">
+                            <td>
+                                {{ $leaveRequest->employee->empId ?? '' }}
+                            </td>
+                            <td>
+                                {{ $leaveRequest->employee->first_name ?? '' }} {{ $leaveRequest->employee->last_name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $leaveRequest->leaveType->title ?? '' }}
+                            </td>
+                            <td>
+                                {{ $leaveRequest->commencement_date ?? '' }}
+                            </td>
+                            <td>
+                                {{ $leaveRequest->resumption_date ?? '' }}
+                            </td>
+                            <td>
+                                {{ $leaveRequest->no_of_day ?? '' }}
+                            </td>
+                            <td>
+                                {{ $leaveRequest->coverBy->first_name ?? 'Don\'t have' }} {{ $leaveRequest->coverBy->last_name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $leaveRequest->reason ?? '' }}
+                            </td>
+                            <td>
+                                @if ($leaveRequest->status == '0')
+                                    <span class="badge badge-info">In Review</span>
+                                @elseif ($leaveRequest->status == '1')
+                                    <span class="badge badge-warning">First Approved</span>
+                                @elseif ($leaveRequest->status == '2')
+                                    <span class="badge badge-success">Approved</span>
+                                @else
+                                    <span class="badge badge-danger">Rejected</span>
+                                @endif
+                            </td>
+                            <td>
+                                <button class="btn btn-success btn-xs btn-load" id="action" onclick="action({{$leaveRequest->id}}, 'approve', 'second')">
+                                    Approve
+                                </button>
+                                <button class="btn btn-danger btn-xs btn-load" id="action" onclick="action({{$leaveRequest->id}}, 'reject', 'second')">
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
+                                    Reject
+                                </button>
+                            </td>
+                            <td>
+                                @can('leave_request_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.leaveRequests.show', $leaveRequest->id) }}">
+                                        {{ trans('global.view') }}
+                                    </a>
+                                @endcan
+
+                                @can('leave_request_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.leaveRequests.edit', $leaveRequest->id) }}">
+                                        {{ trans('global.edit') }}
+                                    </a>
+                                @endcan
+
+                                @can('leave_request_delete')
+                                    <form action="{{ route('admin.leaveRequests.destroy', $leaveRequest->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                    </form>
+                                @endcan
+
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="card mt-3">
+    <div class="card-body">
+        <h6 class="card-title">Second Apprvoe List</h6>
         <div class="table-responsive">
             <table class=" table table-bordered table-striped table-hover datatable datatable-LeaveRequest">
                 <thead>
@@ -125,125 +244,7 @@
         </div>
     </div>
 </div>
-<div class="card mt-3">
-    <div class="card-body">
-        <h6 class="card-title">Second Approve List</h6>
-        <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-LeaveRequest">
-                <thead>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.leaveRequest.fields.id') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.leaveRequest.fields.employee') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.leaveRequest.fields.leave_type') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.leaveRequest.fields.commencement_date') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.leaveRequest.fields.resumption_date') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.leaveRequest.fields.no_of_day') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.leaveRequest.fields.cover_by') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.leaveRequest.fields.reason') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.leaveRequest.fields.status') }}
-                        </th>
-                        <th>
-                            Approval
-                        </th>
-                        <th>
-                            &nbsp;
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($leaveRequests as $key => $leaveRequest)
-                        <tr data-entry-id="{{ $leaveRequest->id }}">
-                            <td>
-                                {{ $leaveRequest->employee->empId ?? '' }}
-                            </td>
-                            <td>
-                                {{ $leaveRequest->employee->first_name ?? '' }} {{ $leaveRequest->employee->last_name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $leaveRequest->leaveType->title ?? '' }}
-                            </td>
-                            <td>
-                                {{ $leaveRequest->commencement_date ?? '' }}
-                            </td>
-                            <td>
-                                {{ $leaveRequest->resumption_date ?? '' }}
-                            </td>
-                            <td>
-                                {{ $leaveRequest->no_of_day ?? '' }}
-                            </td>
-                            <td>
-                                {{ $leaveRequest->coverBy->first_name ?? 'Don\'t have' }} {{ $leaveRequest->coverBy->last_name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $leaveRequest->reason ?? '' }}
-                            </td>
-                            <td>
-                                @if ($leaveRequest->status == '0')
-                                    <span class="badge badge-info">In Review</span>
-                                @elseif ($leaveRequest->status == '1')
-                                    <span class="badge badge-warning">First Approved</span>
-                                @elseif ($leaveRequest->status == '2')
-                                    <span class="badge badge-success">Approved</span>
-                                @else
-                                    <span class="badge badge-danger">Rejected</span>
-                                @endif
-                            </td>
-                            <td>
-                                <button class="btn btn-success btn-xs btn-load" id="action" onclick="action({{$leaveRequest->id}}, 'approve', 'second')">
-                                    Approve
-                                </button>
-                                <button class="btn btn-danger btn-xs btn-load" id="action" onclick="action({{$leaveRequest->id}}, 'reject', 'second')">
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
-                                    Reject
-                                </button>
-                            </td>
-                            <td>
-                                @can('leave_request_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.leaveRequests.show', $leaveRequest->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
 
-                                @can('leave_request_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.leaveRequests.edit', $leaveRequest->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
-
-                                @can('leave_request_delete')
-                                    <form action="{{ route('admin.leaveRequests.destroy', $leaveRequest->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
-
-                            </td>
-
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
 @endcan
 @endsection
 

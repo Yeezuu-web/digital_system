@@ -65,7 +65,7 @@ class LeaveTypesController extends Controller
 
         $leaveType->delete();
 
-        return response(null, Response::HTTP_NO_CONTENT);
+        return back();
     }
 
     public function MassDestroy(MassDestroyLeaveTypeRequest $request)
