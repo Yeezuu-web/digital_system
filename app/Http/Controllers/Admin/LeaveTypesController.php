@@ -61,7 +61,7 @@ class LeaveTypesController extends Controller
 
     public function destroy(LeaveType $leaveType)
     {
-        abort_if(Gate::denies('leave_type_destroy'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('leave_type_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $leaveType->delete();
 
