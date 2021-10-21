@@ -30,18 +30,28 @@ class LeaveRequestsController extends Controller
 
         $children = $department->load(['children']);
 
+        $children = $department->children;
+
+        // Find First Step Approve Request For User login 
+        // 4 table deeper Query to find leave request by child department
         $leaveRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
             ->whereHas('department', function ($q) use ($department){
-                $q->where('positions.department_id', $department->id);
+                $q->where('departments.parent_id', !empty($children) ? $children->id : $department->id);
             })
+            ->where('employee_id', '!=', $employee->id)
             ->get();
 
-        if(empty($children)){
-                $leaveChildRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
-                    ->whereHas('department', function ($q) use ($children){
-                        $q->where('positions.department_id', $children->children->id);
-                    })
-                    ->get();
+        // Find First Step Approve Request For User login 
+        // 4 table deeper Query to find leave request by children department of child (2 step child)
+        if(!empty($children))
+        {
+            $secChildren = $children->load(['children']);
+            
+            $leaveChildRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
+                ->whereHas('department', function ($q) use ($secChildren){
+                    $q->where('departments.id', $secChildren->children->id);
+                })
+                ->get();
         }else{
             $leaveChildRequests = [];
         }

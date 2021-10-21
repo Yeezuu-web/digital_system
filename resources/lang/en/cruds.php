@@ -283,7 +283,7 @@ return [
     ],
     'leaveRequest' => [
         'title'             => 'Leave Requests',
-        'menu'              => 'Pending Requests',
+        'menu'              => 'Leave Requests Status',
         'title_singular'    => 'Leave Request',
         'fields'            => [
             'id'                => 'ID',
