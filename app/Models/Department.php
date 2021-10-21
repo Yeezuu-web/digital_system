@@ -49,6 +49,11 @@ class Department extends Model
         return $this->children()->with('allChildren');
     }
 
+    public function childs()
+    {
+        return $this->hasMany(Department::class, $this->parentColumn);
+    }
+
     public function employees()
     {
         return $this->hasManyThrough(Employee::class, Position::class);

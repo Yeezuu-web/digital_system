@@ -24,11 +24,11 @@ class LeaveRequestsController extends Controller
         
         $currentUser = auth()->user()->load(['employee']);
 
-        $employee = $currentUser->employee;
+        $employee = $currentUser->employee->load(['lineManager']);
         
-        $department = $employee->department;
-
-        $children = $department->load(['children']);
+        $lineManager = $employee->lineManager;
+        
+        $department = $lineManager->department;
 
         $children = $department->children;
 
@@ -36,7 +36,7 @@ class LeaveRequestsController extends Controller
         // 4 table deeper Query to find leave request by child department
         $leaveRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
             ->whereHas('department', function ($q) use ($department){
-                $q->where('departments.parent_id', !empty($children) ? $children->id : $department->id);
+                $q->where('departments.id', $department->id);
             })
             ->where('employee_id', '!=', $employee->id)
             ->get();
@@ -45,11 +45,9 @@ class LeaveRequestsController extends Controller
         // 4 table deeper Query to find leave request by children department of child (2 step child)
         if(!empty($children))
         {
-            $secChildren = $children->load(['children']);
-            
             $leaveChildRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
-                ->whereHas('department', function ($q) use ($secChildren){
-                    $q->where('departments.id', $secChildren->children->id);
+                ->whereHas('department', function ($q) use ($children){
+                    $q->where('departments.id', $children->id);
                 })
                 ->get();
         }else{

@@ -7,7 +7,7 @@
 </div>
 <div class="card">
     <div class="card-header">
-        {{ trans('global.form') }} {{ trans('cruds.leaveRequest.title_singular') }}
+        {{ trans('cruds.leaveRequest.title_singular') }} {{ trans('global.form') }} 
     </div>
     <div class="card-body">
         <form action="{{ route("admin.leaveRequests.store") }}" method="POST" autocomplete="off">
