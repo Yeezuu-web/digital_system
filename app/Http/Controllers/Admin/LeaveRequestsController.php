@@ -36,11 +36,15 @@ class LeaveRequestsController extends Controller
             })
             ->get();
 
-        $leaveChildRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
-            ->whereHas('department', function ($q) use ($children){
-                $q->where('positions.department_id', $children->children->id);
-            })
-            ->get();
+        if(empty($children)){
+                $leaveChildRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
+                    ->whereHas('department', function ($q) use ($children){
+                        $q->where('positions.department_id', $children->children->id);
+                    })
+                    ->get();
+        }else{
+            $leaveChildRequests = [];
+        }
         
 
         return view('admin.leaveRequests.index', compact('leaveRequests', 'leaveChildRequests'));
