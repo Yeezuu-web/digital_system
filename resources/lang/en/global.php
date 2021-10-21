@@ -321,5 +321,5 @@ return [
     'leave_request'                 => 'Leave Request',
     'create_leave'                  => 'Form Leave Request',
     'form'                          => 'Form',
-    'report_leave'                  => 'Reeport Leave',
+    'report_leave'                  => 'Report Leave',
 ];

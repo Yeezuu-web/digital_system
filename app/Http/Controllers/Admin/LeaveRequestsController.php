@@ -161,7 +161,7 @@ class LeaveRequestsController extends Controller
         $employee = $leaveRequest->employee;
         
         $getDepartment = $employee->department;
-        
+
         // Load LineManager of the requester
         $loadlineManager = $employee->load(['lineManager']);
         
@@ -172,7 +172,7 @@ class LeaveRequestsController extends Controller
         $currentUser = auth()->user()->load(['employee']);
 
         $currentEmp = $currentUser->employee;
-
+        
         $dept = '';
 
         if($currentEmp->empId != $employee->empId){
@@ -186,25 +186,25 @@ class LeaveRequestsController extends Controller
                 $parent = $lineManagerDept->parent;
 
                 $dept = $parent->title;
-                
+
                 if(!empty($parent->parent)){
                     if($parent->parent->title != $currentEmp->department->title){
                         // Change employee to upper level
                         // @from requester employee
                         $checkDept = $employee->department;
             
-                        $upperDept =  $checkDept->load(['parent']);
+                        $upperDept =  $checkDept->load(['children']);
             
-                        $getDepartment = $upperDept->parent;
+                        $getDepartment = $upperDept->children;
                     }
                 }else{
                     // Change employee to upper level
                     // @from requester employee
                     $checkDept = $employee->department;
         
-                    $upperDept =  $checkDept->load(['parent']);
+                    $upperDept =  $checkDept->load(['children']);
         
-                    $getDepartment = $upperDept->parent;
+                    $getDepartment = $upperDept->children;
                 }
             }else {
                 // If this request from employee
@@ -224,7 +224,7 @@ class LeaveRequestsController extends Controller
         }
         // Got department title
         $title = $getDepartment->title;
-        
+
         $roles = $currentUser->roles->toArray();
 
         return view('admin.leaveRequests.approvals.first_approve', compact('leaveRequest', 'employee', 'title', 'dept', 'roles'));
@@ -371,12 +371,10 @@ class LeaveRequestsController extends Controller
             $loadDept = $lineManager->load(['department']);
 
             $dept = $loadDept->department;
-
-            $loadChild = $dept->load(['children']);
-
-            if(!empty($loadChild->children))
+            
+            if(!empty($dept))
             {
-                $children = $loadChild->children->title;
+                $children = $dept->title;
             } else {
                 $children = '';
             }
