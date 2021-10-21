@@ -39,6 +39,7 @@ class LeaveRequestsController extends Controller
                 $q->where('departments.id', $department->id);
             })
             ->where('employee_id', '!=', $employee->id)
+            ->where('status', 0)
             ->get();
 
         // Find First Step Approve Request For User login 
@@ -49,6 +50,7 @@ class LeaveRequestsController extends Controller
                 ->whereHas('department', function ($q) use ($children){
                     $q->where('departments.id', $children->id);
                 })
+                ->where('status', 1)
                 ->get();
         }else{
             $leaveChildRequests = [];
@@ -476,7 +478,7 @@ class LeaveRequestsController extends Controller
         {
             $leaveRequest->update(['status' => '1']);
         }
-        elseif ($request->action == 'reject' && $request->type == 'second')
+        elseif ($request->action == 'approve' && $request->type == 'second')
         {
             $leaveRequest->update(['status' => '2']);
         } 

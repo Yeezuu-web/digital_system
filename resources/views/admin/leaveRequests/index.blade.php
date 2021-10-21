@@ -86,10 +86,10 @@
                                 @endif
                             </td>
                             <td>
-                                <button class="btn btn-success btn-xs btn-load" id="action" onclick="action({{$leaveRequest->id}}, 'approve', 'second')">
+                                <button class="btn btn-success btn-xs btn-load" id="action" onclick="action({{$leaveRequest->id}}, 'approve', 'first')">
                                     Approve
                                 </button>
-                                <button class="btn btn-danger btn-xs btn-load" id="action" onclick="action({{$leaveRequest->id}}, 'reject', 'second')">
+                                <button class="btn btn-danger btn-xs btn-load" id="action" onclick="action({{$leaveRequest->id}}, 'reject', 'first')">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
                                     Reject
                                 </button>
@@ -205,11 +205,11 @@
                                 @endif
                             </td>
                             <td>
-                                <button class="btn btn-success btn-xs btn-load" id="action" onclick="action({{$leaveChildRequest->id}}, 'approve', 'first')">
+                                <button class="btn btn-success btn-xs btn-load" id="action" onclick="action({{$leaveChildRequest->id}}, 'approve', 'second')">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
                                     Approve
                                 </button>
-                                <button class="btn btn-danger btn-xs btn-load" id="action" onclick="action({{$leaveChildRequest->id}}, 'reject', 'first')">
+                                <button class="btn btn-danger btn-xs btn-load" id="action" onclick="action({{$leaveChildRequest->id}}, 'reject', 'second')">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
                                     Reject
                                 </button>
