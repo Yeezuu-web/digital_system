@@ -14,7 +14,7 @@
     <div class="card-header">
         {{ trans('cruds.leaveRequest.title_singular') }} For First Approve
     </div>
-    @if ($dept === $title || in_array('Admin', $roles[0]))
+    @if ($dept === $title || in_array('Developer', $roles[0]))
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">

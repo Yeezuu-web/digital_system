@@ -16,7 +16,7 @@
     </div>
     {{-- if roles user have first index of roles are Developer  --}}
     {{-- User Can have fully approve --}}
-    @if ($title === $children || in_array('Admin', $roles[0]))
+    @if ($title === $children || in_array('Developer', $roles[0]))
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
