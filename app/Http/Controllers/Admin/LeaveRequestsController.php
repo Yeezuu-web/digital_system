@@ -289,6 +289,23 @@ class LeaveRequestsController extends Controller
                     $employeeAssecondLineManager->load(['user']);
                     
                     $email = $employeeAssecondLineManager->user->email;
+
+                    $now = now();
+                    $leaveRequest->update(['status' => '1', 'reviewed_at' => $now]);
+
+                    $leaveRequest->user()->associate($request->reviewedBy)->save();
+
+                    $route = route('admin.leaveRequests.secondApprove', $leaveRequest);
+
+                    $details = [
+                        'employee' => $employee->first_name.' '.$employee->last_name,
+                        'commencement_date' => $leaveRequest->commencement_date,
+                        'resumption_date' => $leaveRequest->resumption_date,
+                        'reason' => $leaveRequest->reason,
+                        'link' => $route,
+                    ];
+                
+                    \Mail::to($email)->send(new \App\Mail\LeaveRequestMail($details));
                     
                 }else{
                     // if department doesn't have parent auto first approve
@@ -307,22 +324,6 @@ class LeaveRequestsController extends Controller
                 return false;
             }
             
-            $now = now();
-            $leaveRequest->update(['status' => '1', 'reviewed_at' => $now]);
-
-            $leaveRequest->user()->associate($request->reviewedBy)->save();
-
-            $route = route('admin.leaveRequests.secondApprove', $leaveRequest);
-
-            $details = [
-                'employee' => $employee->first_name.' '.$employee->last_name,
-                'commencement_date' => $leaveRequest->commencement_date,
-                'resumption_date' => $leaveRequest->resumption_date,
-                'reason' => $leaveRequest->reason,
-                'link' => $route,
-            ];
-           
-            \Mail::to($email)->send(new \App\Mail\LeaveRequestMail($details));
             
         }elseif ( $request->action == 'reject' ) {
             $now = now();
