@@ -42,21 +42,6 @@
                 @enderror
             </div>
 
-            {{-- <div class="form-group">
-                <label for="leave_type_id">{{ trans('cruds.leaveRequest.fields.leave_type')}} <span class="text-danger">*</span></label>
-                @foreach ($leaveTypes as $id => $leaveType)
-                    <div class="form-check ml-2">
-                        <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="leave_type_id" id="leave_type_id{{ $id }}" value="{{ $id }}">
-                            {{ $leaveType }}
-                        <i class="input-frame"></i></label>
-                    </div>
-                @endforeach
-                @error('leave_type_id')
-                    <label class="error mt-2 text-danger">{{ $message }}</label>
-                @enderror
-            </div> --}}
-
             <div class="form-group">
                 <label for="commencement_date">{{ trans('cruds.leaveRequest.fields.commencement_date')}} <span class="text-danger">*</span></label>
                 <input class="form-control datepicker @error('commencement_date') form-control-danger @enderror" type="text" name="commencement_date" id="commencement_date" value="{{ old('commencement_date', '') }}" required>
@@ -81,11 +66,25 @@
                 @enderror
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="reason1">
                 <label for="reason">{{ trans('cruds.leaveRequest.fields.reason')}}</label>
                 <textarea class="form-control @error('reason') form-control-danger @enderror" type="text" name="reason" id="reason" rows="5" required></textarea>
                 @error('reason')
                 <span class="error mt-2 text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-group" id="reason2">
+                <label for="reason">{{ trans('cruds.leaveRequest.fields.reason')}} <span class="text-danger">(Optional)</span></label>
+                <select class="js-example-basic-single w-100 select2-hidden-accessible @error('reason') form-control-danger @enderror" name="reason" data-width="100%" aria-hidden="true">
+                    <option value="">--- Choose reason for spacail leave ---</option>
+                    <option value="Personal wedding">Personal wedding</option>
+                    <option value="Paternity Obligation">Paternity Obligation</option>
+                    <option value="Employee's own children Wedding">Employee's own children Wedding</option>
+                    <option value="Bereavement">Bereavement</option>
+                </select>
+                @error('reason')
+                    <label class="error mt-2 text-danger">{{ $message }}</label>
                 @enderror
             </div>
 
@@ -212,6 +211,22 @@
                 $('#upload-attach').show();
             }else{
                 $('#upload-attach').hide();
+            }
+        })
+    })
+</script>
+<script>
+    $(function() {
+        $('#reason1').show();
+        $('#reason2').hide();
+        $('#leave_type_id').change(function() {
+            let val = $(this).val();
+            if(val === '3'){
+                $('#reason1').hide();
+                $('#reason2').show();
+            }else{
+                $('#reason1').show();
+                $('#reason2').hide();
             }
         })
     })

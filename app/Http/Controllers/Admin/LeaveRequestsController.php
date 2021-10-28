@@ -22,40 +22,46 @@ class LeaveRequestsController extends Controller
     {
         abort_if(Gate::denies('leave_request_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         
-        $currentUser = auth()->user()->load(['employee']);
+        $user = auth()->user()->roles->first();
 
-        $employee = $currentUser->employee->load(['lineManager']);
-        
-        $lineManager = $employee->lineManager;
-        
-        $department = $lineManager->department;
+        if($user->title !== 'Developer'){
+            $currentUser = auth()->user()->load(['employee']);
 
-        $children = $department->children;
+            $employee = $currentUser->employee->load(['lineManager']);
+            
+            $lineManager = $employee->lineManager;
+            
+            $department = $lineManager->department;
 
-        // Find First Step Approve Request For User login 
-        // 4 table deeper Query to find leave request by child department
-        $leaveRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
-            ->whereHas('department', function ($q) use ($department){
-                $q->where('departments.id', $department->id);
-            })
-            ->where('employee_id', '!=', $employee->id)
-            ->get();
+            $children = $department->children;
 
-        // Find First Step Approve Request For User login 
-        // 4 table deeper Query to find leave request by children department of child (2 step child)
-        if(!empty($children))
-        {
-            $leaveChildRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
-                ->whereHas('department', function ($q) use ($children){
-                    $q->where('departments.id', $children->id);
+            // Find First Step Approve Request For User login 
+            // 4 table deeper Query to find leave request by child department
+            $leaveRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
+                ->whereHas('department', function ($q) use ($department){
+                    $q->where('departments.id', $department->id);
                 })
+                ->where('employee_id', '!=', $employee->id)
                 ->get();
-        }else{
+
+            // Find First Step Approve Request For User login 
+            // 4 table deeper Query to find leave request by children department of child (2 step child)
+            if(!empty($children))
+            {
+                $leaveChildRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])
+                    ->whereHas('department', function ($q) use ($children){
+                        $q->where('departments.id', $children->id);
+                    })
+                    ->get();
+            }else{
+                $leaveChildRequests = [];
+            }
+        }else {
+            $leaveRequests = LeaveRequest::with(['employee', 'leaveType', 'department'])->get();
             $leaveChildRequests = [];
         }
-        
 
-        return view('admin.leaveRequests.index', compact('leaveRequests', 'leaveChildRequests'));
+        return view('admin.leaveRequests.index', compact('leaveRequests', 'leaveChildRequests', 'user'));
     }
 
     public function create()

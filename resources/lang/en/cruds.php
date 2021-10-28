@@ -300,7 +300,7 @@ return [
             'resumption_date_helper'       => ' ',
             'reason'              => 'Reason',
             'reason_helper'       => ' ',
-            'cover_by_long'         => 'My regular dutires and responsibilties will be covered by',
+            'cover_by_long'         => 'My regular duties and responsibilities will be covered by',
             'cover_by'              => 'Cover By',
             'cover_by_helper'       => ' ',
             'attachments'              => 'Attachments',
