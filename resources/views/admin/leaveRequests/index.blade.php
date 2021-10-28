@@ -96,7 +96,7 @@
                                     class="btn btn-success btn-xs btn-load" 
                                     id="action" 
                                     onclick="action({{$leaveRequest->id}}, 'approve', 'first')"
-                                    {{ in_array($leaveRequest->status, ['0', '3'])  ? '' : 'hidden' }}
+                                    {{ in_array($leaveRequest->status, ['0'])  ? '' : 'hidden' }}
                                     >
                                     Approve
                                 </button>
@@ -104,7 +104,7 @@
                                     class="btn btn-danger btn-xs btn-load" 
                                     id="action" 
                                     onclick="action({{$leaveRequest->id}}, 'reject', 'first')"
-                                    {{ $leaveRequest->status == '3' ? 'hidden' : '' }}
+                                    {{ in_array($leaveRequest->status, ['1', '2', '3']) ? 'hidden' : '' }}
                                     >
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
                                     Reject
@@ -226,7 +226,7 @@
                                         class="btn btn-success btn-xs btn-load" 
                                         id="action" 
                                         onclick="action({{$leaveChildRequest->id}}, 'approve', 'second')"
-                                        {{ in_array($leaveChildRequest->status, ['1', '3'])  ? '' : 'hidden' }}
+                                        {{ in_array($leaveChildRequest->status, ['1'])  ? '' : 'hidden' }}
                                         >
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
                                         Approve
@@ -235,7 +235,7 @@
                                         class="btn btn-danger btn-xs btn-load" 
                                         id="action" 
                                         onclick="action({{$leaveChildRequest->id}}, 'reject', 'second')"
-                                        {{ $leaveChildRequest->status == '3' ? 'hidden' : '' }}
+                                        {{ in_array($leaveChildRequest->status, ['0', '3']) ? 'hidden' : '' }}
                                         >
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
                                         Reject
@@ -424,9 +424,7 @@
                             allowOutsideClick: false
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                // location.reload();
-                                let table = $('.datatable-LeaveRequest:not(.ajaxTable)').DataTable({ buttons: dtButtons });
-                                table.draw();
+                                location.reload();
                             }
                         })
                     }
