@@ -49,7 +49,7 @@
                                         @elseif ($leaveRequest->status == '2')
                                             <span class="badge badge-success">Approved</span>
                                         @else
-                                            <span class="badge badge-danger">First Approved</span>
+                                            <span class="badge badge-danger">Rejected</span>
                                         @endif
                                     </td>
                                 </tr>
