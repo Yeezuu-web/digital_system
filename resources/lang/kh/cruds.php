@@ -273,7 +273,7 @@ return [
             'employee_helper'      => ' ',
             'leave_type'             => 'ប្រភេទ ច្បាប់',
             'leave_type_helper'      => ' ',
-            'no_of_day'              => 'គ្មាន',
+            'no_of_day'              => 'ចំនួនថ្ងៃឈប់សរុប',
             'no_of_day_helper'       => ' ',
             'commencement_date'              => 'កាលបរិច្ឆេទចាប់ផ្តើម',
             'commencement_date_helper'       => ' ',
