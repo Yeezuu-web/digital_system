@@ -258,27 +258,32 @@ class LeaveRequestsController extends Controller
                 
                 $firstlineManager = Employee::with('lineManager')->where('id', $department->lineManager->employee_id)->first();
             }
-            elseif(!empty($employee->lineManager)){
+            else{
                 $headDepartment = Department::with(['parent'])->where('id', $employee->department->id)->first();
-                
+
                 $headDepartment->parent->load(['lineManager']);
                 
                 $firstlineManager = Employee::with('lineManager')->where('id', $headDepartment->parent->lineManager->employee_id)->first();
             }
 
             try {
-                $headDepartmentLineManager =  Department::with(['parent'])->where('id', $firstlineManager->department->id)->first();
-                
-                $parentDep = $headDepartmentLineManager->parent; // load parent department
+                // load parent department of line manager department (1)
+                // employee->lineManager->department->parent || For condition
+                $parent = $firstlineManager->lineManager->department->parent; 
 
-                if(!empty($parentDep)) // check condition if departemnt have parent
+                // load parent department of approver (employee) (2)
+                // employee->postition->department
+                $parentDep = $firstlineManager->department; 
+
+                // condition if (1) false
+                if(!empty($parent)) 
                 {
                     $parentDep->load(['lineManager']);
-    
+                    
                     $parentDepLineManager = $parentDep->lineManager;
-    
+                    
                     $parentDepLineManager->load(['employee']);
-    
+                    
                     $employeeAssecondLineManager = $parentDepLineManager->employee;
     
                     $employeeAssecondLineManager->load(['user']);
