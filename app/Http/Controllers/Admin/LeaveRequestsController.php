@@ -82,19 +82,8 @@ class LeaveRequestsController extends Controller
     public function store(StoreLeaveRequestRequest $request)
     {
         $employee = Employee::with(['department', 'lineManager'])->where('id', $request->employee_id)->first();
-        
-        if(empty($employee->lineManager)){
-            $department = Department::with('lineManager')->where('id', $employee->department->id)->first();
-            
-            $lineManagerUser = Employee::with('user')->where('id', $department->lineManager->employee_id)->first();
-        }
-        elseif(!empty($employee->lineManager)){
-            $headDepartment = Department::with(['parent'])->where('id', $employee->department->id)->first();
-            
-            $headDepartment->parent->load(['lineManager']);
-            
-            $lineManagerUser = Employee::with('user')->where('id', $headDepartment->parent->lineManager->employee_id)->first();
-        }
+
+        $email = $employee->department->lineManager->employee->user->email;
         
         $leaveRequest = LeaveRequest::create($request->validated());
 
@@ -116,7 +105,7 @@ class LeaveRequestsController extends Controller
             'link' => $route,
         ];
        
-        \Mail::to($lineManagerUser->user->email)->send(new \App\Mail\LeaveRequestMail($details));
+        \Mail::to($email)->send(new \App\Mail\LeaveRequestMail($details));
 
         return redirect()->route('admin.leaveRequests.record')
             ->with('success', 'Leave Request has been request successfully.');
