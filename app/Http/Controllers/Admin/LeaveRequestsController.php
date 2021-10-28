@@ -271,7 +271,7 @@ class LeaveRequestsController extends Controller
                 
                 $parentDep = $headDepartmentLineManager->parent; // load parent department
 
-                if(!empty($parentDep)) // checl condition if departemnt have parent
+                if(!empty($parentDep)) // check condition if departemnt have parent
                 {
                     $parentDep->load(['lineManager']);
     
@@ -321,7 +321,7 @@ class LeaveRequestsController extends Controller
             
         }elseif ( $request->action == 'reject' ) {
             $now = now();
-            $leaveRequest->update(['status' => '4', 'reviewed_at' => $now]);
+            $leaveRequest->update(['status' => '3', 'reviewed_at' => $now]);
 
             $leaveRequest->user()->associate($request->reviewedBy)->save();
 
@@ -434,7 +434,7 @@ class LeaveRequestsController extends Controller
 
         }elseif($request->action == 'reject'){
 
-            $leaveRequest->update(['status' => '4']);
+            $leaveRequest->update(['status' => '3']);
             
         }else{
             return response('Opss', 402);
